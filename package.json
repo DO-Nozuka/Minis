@@ -1,7 +1,7 @@
 {
   "author": "Daiki Onozuka",
   "dependencies": {
-    "jp.DO-Nozuka.rtmidi": "1.0.3",
+    "jp.DO-Nozuka.RtMidiForUnity": "1.0.3",
     "com.unity.inputsystem": "1.0.1"
   },
   "description": "Minis: MIDI Input plugin for Unity New Input System(Original by keijiro)",
