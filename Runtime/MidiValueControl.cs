@@ -3,7 +3,7 @@ namespace Minis
     //
     // Custom control class for MIDI controls
     //
-    public class MidiValueControl : UnityEngine.InputSystem.Controls.AxisControl
+    public class MidiValueControl : UnityEngine.InputSystem.Controls.Vector2Control
     {
         public MidiValueControl()
         {
@@ -11,8 +11,8 @@ namespace Minis
                 UnityEngine.InputSystem.LowLevel.InputStateBlock.FormatByte;
 
             // AxisControl parameters
-            normalize = true;
-            normalizeMax = 0.49803921568f;
+            //normalize = true;
+            //normalizeMax = 0.49803921568f;
         }
 
         // Calculate control number from offset

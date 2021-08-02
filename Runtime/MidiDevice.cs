@@ -88,16 +88,7 @@ namespace Minis
 
         internal void ProcessNoteOn(byte note, byte velocity, byte channel)
         {
-            // State update with a delta event
-            //InputSystem.QueueDeltaStateEvent(_notes[note], velocity);
-
-            // Queue an input event on the first gamepad.
-            //using (StateEvent.From(this, out var eventPtr))
-            //{
-            //    //_notes[note].WriteValueIntoEvent(new Vector2(velocity / 127f, channel / 15f), eventPtr);
-            //    //InputSystem.QueueEvent(eventPtr);
-            //}
-            
+            // State update with a delta event        
             InputSystem.QueueDeltaStateEvent(_notes[note], new Vector2(velocity, channel));
             // Note-on event invocation (only when it exists)
 
@@ -109,12 +100,7 @@ namespace Minis
 
         internal void ProcessNoteOff(byte note, byte channel)
         {
-            // Queue an input event on the first gamepad.
-            //using (StateEvent.From(this, out var eventPtr))
-            //{
-            //    _notes[note].WriteValueIntoEvent(new Vector2(0f, channel / 15f), eventPtr);
-            //    InputSystem.QueueEvent(eventPtr);
-            //}
+            // State update with a delta event
             InputSystem.QueueDeltaStateEvent(_notes[note], new Vector2(0f, channel));
 
             // Note-off event invocation (only when it exists)
@@ -123,10 +109,10 @@ namespace Minis
                     action(_notes[note]);
         }
 
-        internal void ProcessControlChange(byte number, byte value)
+        internal void ProcessControlChange(byte number, byte value, byte channel)
         {
             // State update with a delta event
-            InputSystem.QueueDeltaStateEvent(_controls[number], value);
+            InputSystem.QueueDeltaStateEvent(_controls[number], new Vector2(value, channel));
 
             // Control-change event invocation (only when it exists)
             var fvalue = value / 127.0f;
@@ -150,7 +136,7 @@ namespace Minis
             for (var i = 0; i < 128; i++)
             {
                 _notes[i] = GetChildControl<MidiNoteControl>("DonoNote" + i.ToString("D3"));
-                _controls[i] = GetChildControl<MidiValueControl>("control" + i.ToString("D3"));
+                _controls[i] = GetChildControl<MidiValueControl>("DonoControl" + i.ToString("D3"));
             }
 
             // MIDI channel number determination
