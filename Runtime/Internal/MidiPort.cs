@@ -84,7 +84,7 @@ namespace Minis
                 if (size != 3) break;
 
                 var status = message[0] >> 4;
-                var channel = message[0] & 0xf;
+                var channel = (byte)(message[0] & 0x0f);
                 var data1 = message[1];
                 var data2 = message[2];
 
@@ -93,9 +93,9 @@ namespace Minis
                 var noteOff = (status == 8) || (status == 9 && data2 == 0);
 
                 if (status == 9 && !noteOff)
-                    GetChannelDevice(channel).ProcessNoteOn(data1, data2);
+                    GetChannelDevice(channel).ProcessNoteOn(data1, data2, channel);
                 else if (noteOff)
-                    GetChannelDevice(channel).ProcessNoteOff(data1);
+                    GetChannelDevice(channel).ProcessNoteOff(data1, channel);
                 else if (status == 0xb)
                     GetChannelDevice(channel).ProcessControlChange(data1, data2);
             }
