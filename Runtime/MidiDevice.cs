@@ -26,8 +26,8 @@ namespace Minis
           => _notes[noteNumber];
 
         // Get an input control object bound for a specific control element (CC).
-        public MidiValueControl GetControl(int controlNumber)
-          => _controls[controlNumber];
+        public MidiCCControl GetControl(int controlNumber)
+          => _controlChanges[controlNumber];
 
         // Will-note-on event
         //
@@ -62,11 +62,11 @@ namespace Minis
         // device instance. It gives a target CC object and a control value as
         // event arguments. Note that the MidiNoteControl hasn't been updated at
         // this point.
-        public event Action<MidiValueControl, float> onWillControlChange
+        public event Action<MidiCCControl, float> onWillControlChange
         {
             // Action list lazy allocation
             add => (_willControlChangeActions = _willControlChangeActions ??
-                    new List<Action<MidiValueControl, float>>()).Add(value);
+                    new List<Action<MidiCCControl, float>>()).Add(value);
             remove => _willControlChangeActions.Remove(value);
         }
 
@@ -76,11 +76,14 @@ namespace Minis
 
 
         MidiNoteControl[] _notes;
-        MidiValueControl[] _controls;
+        MidiCCControl[] _controlChanges;
+        MidiPitchBendControl _pitchBend;
+        
 
         List<Action<MidiNoteControl, float>> _willNoteOnActions;
         List<Action<MidiNoteControl>> _willNoteOffActions;
-        List<Action<MidiValueControl, float>> _willControlChangeActions;
+        List<Action<MidiCCControl, float>> _willControlChangeActions;
+        List<Action<MidiPitchBendControl, float>> _willPitchBendActions;
 
         #endregion
 
@@ -112,13 +115,34 @@ namespace Minis
         internal void ProcessControlChange(byte number, byte value, byte channel)
         {
             // State update with a delta event
-            InputSystem.QueueDeltaStateEvent(_controls[number], new Vector2(value, channel));
+            InputSystem.QueueDeltaStateEvent(_controlChanges[number], new Vector2(value, channel));
 
             // Control-change event invocation (only when it exists)
             var fvalue = value / 127.0f;
             if (_willControlChangeActions != null)
                 foreach (var action in _willControlChangeActions)
-                    action(_controls[number], fvalue);
+                    action(_controlChanges[number], fvalue);
+        }
+
+        internal void ProcessPitchBend(byte value1, byte value2, byte channel)
+        {
+            var PitchBendValue = (value2 << 7) + value1 - 8192;
+            float value;
+            if (PitchBendValue < 0)
+                value = PitchBendValue / 8192f;
+            else if (PitchBendValue > 0)
+                value = PitchBendValue / 8191f;
+            else
+                value = 0;
+
+            // State update with a delta event
+            InputSystem.QueueDeltaStateEvent(_pitchBend, new Vector2(value, channel));
+
+            // Control-change event invocation (only when it exists)
+            var fvalue = value;
+            if (_willPitchBendActions != null)
+                foreach (var action in _willPitchBendActions)
+                    action(_pitchBend, fvalue);
         }
 
         #endregion
@@ -131,13 +155,14 @@ namespace Minis
 
             // Populate the input controls.
             _notes = new MidiNoteControl[128];
-            _controls = new MidiValueControl[128];
+            _controlChanges = new MidiCCControl[128];
 
             for (var i = 0; i < 128; i++)
             {
                 _notes[i] = GetChildControl<MidiNoteControl>("DonoNote" + i.ToString("D3"));
-                _controls[i] = GetChildControl<MidiValueControl>("DonoControl" + i.ToString("D3"));
+                _controlChanges[i] = GetChildControl<MidiCCControl>("DonoControl" + i.ToString("D3"));
             }
+            _pitchBend = GetChildControl<MidiPitchBendControl>("PitchBend");
 
             // MIDI channel number determination
             // Here is a dirty trick: Parse the last two characters in the product

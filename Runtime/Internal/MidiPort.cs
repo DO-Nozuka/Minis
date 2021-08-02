@@ -96,8 +96,10 @@ namespace Minis
                     GetChannelDevice(channel).ProcessNoteOn(data1, data2, channel);
                 else if (noteOff)
                     GetChannelDevice(channel).ProcessNoteOff(data1, channel);
-                else if (status == 0xb)
+                else if (status == 0xB)
                     GetChannelDevice(channel).ProcessControlChange(data1, data2, channel);
+                else if (status == 0xE)
+                    GetChannelDevice(channel).ProcessPitchBend(data1, data2, channel);
             }
         }
 

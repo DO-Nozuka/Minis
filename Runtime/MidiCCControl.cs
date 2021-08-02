@@ -3,9 +3,9 @@ namespace Minis
     //
     // Custom control class for MIDI controls
     //
-    public class MidiValueControl : UnityEngine.InputSystem.Controls.Vector2Control
+    public class MidiCCControl : UnityEngine.InputSystem.Controls.Vector2Control
     {
-        public MidiValueControl()
+        public MidiCCControl()
         {
             m_StateBlock.format =
                 UnityEngine.InputSystem.LowLevel.InputStateBlock.FormatByte;

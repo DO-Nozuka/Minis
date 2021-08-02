@@ -409,5 +409,8 @@ namespace Minis
         [InputControl(name = "DonoNote127", displayName = "DonoNote G9", shortDisplayName = "DN G9", layout = "MidiNote", offset = 127)]
         public fixed byte donotes[128];
         #endregion
+
+        [InputControl(name = "PitchBend", displayName = "PitchBend", shortDisplayName = "Pitch", layout = "MidiPitch", offset = 256)]
+        public fixed byte pitch[1];
     }
 }
