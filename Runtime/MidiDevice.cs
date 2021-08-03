@@ -135,7 +135,6 @@ namespace Minis
         {
             var PitchBendValue = (value2 << 7) + value1 - 8192;
 
-            Debug.Log(PitchBendValue);
             float value;
             if (PitchBendValue < 0)
             {
