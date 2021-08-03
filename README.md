@@ -1,16 +1,6 @@
-Copy from https://github.com/keijiro/Minis
-
 Minis: MIDI Input for New Input System
 ======================================
-
-![gif](https://i.imgur.com/xo9BgV4.gif)
-![gif](https://i.imgur.com/UFqQcEz.gif)
-
-**Minis** (MIDI Input for New Input System) is a Unity plugin that adds MIDI
-input device support to [Unity's new Input System].
-
-[Unity's new Input System]:
-  https://blogs.unity3d.com/2019/10/14/introducing-the-new-input-system/
+Original => https://github.com/keijiro/Minis
 
 System Requirements
 -------------------
@@ -22,44 +12,10 @@ On Linux, ALSA (libasound2) must be installed on the system.
 
 How To Install
 --------------
+1. Open Package Manager
+2. Add package from git URL
+https://github.com/DO-Nozuka/Minis.git
 
-This package uses the [scoped registry] feature to resolve package
-dependencies. Please add the following sections to the manifest file
-(Packages/manifest.json).
-
-[scoped registry]: https://docs.unity3d.com/Manual/upm-scoped.html
-
-To the `scopedRegistries` section:
-
-```
-{
-  "name": "Keijiro",
-  "url": "https://registry.npmjs.com",
-  "scopes": [ "jp.keijiro" ]
-}
-```
-
-To the `dependencies` section:
-
-```
-"jp.keijiro.minis": "1.0.9"
-```
-
-After changes, the manifest file should look like below:
-
-```
-{
-  "scopedRegistries": [
-    {
-      "name": "Keijiro",
-      "url": "https://registry.npmjs.com",
-      "scopes": [ "jp.keijiro" ]
-    }
-  ],
-  "dependencies": {
-    "jp.keijiro.minis": "1.0.9",
-    ...
-```
 
 How To Use
 ----------
