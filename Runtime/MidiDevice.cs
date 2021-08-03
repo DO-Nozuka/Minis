@@ -78,12 +78,16 @@ namespace Minis
         MidiNoteControl[] _notes;
         MidiCCControl[] _controlChanges;
         MidiPitchBendControl _pitchBend;
-        
+        MidiPitchUpControl _pitchUp;
+        MidiPitchDownControl _pitchDown;
+
 
         List<Action<MidiNoteControl, float>> _willNoteOnActions;
         List<Action<MidiNoteControl>> _willNoteOffActions;
         List<Action<MidiCCControl, float>> _willControlChangeActions;
         List<Action<MidiPitchBendControl, float>> _willPitchBendActions;
+        List<Action<MidiPitchUpControl, float>> _willPitchUpActions;
+        List<Action<MidiPitchDownControl, float>> _willPitchDownActions;
 
         #endregion
 
@@ -115,8 +119,8 @@ namespace Minis
         internal void ProcessControlChange(byte number, byte value, byte channel)
         {
             // State update with a delta event
-            InputSystem.QueueDeltaStateEvent(_controlChanges[number], new Vector2(value, channel));
 
+            InputSystem.QueueDeltaStateEvent(_controlChanges[number], new Vector2(value, channel));
             // Control-change event invocation (only when it exists)
             var fvalue = value / 127.0f;
             if (_willControlChangeActions != null)
@@ -124,25 +128,88 @@ namespace Minis
                     action(_controlChanges[number], fvalue);
         }
 
+
+        private bool IsLastPitchUp = false;
+        private bool IsLastPitchDown = false;
         internal void ProcessPitchBend(byte value1, byte value2, byte channel)
         {
             var PitchBendValue = (value2 << 7) + value1 - 8192;
+
+            Debug.Log(PitchBendValue);
             float value;
             if (PitchBendValue < 0)
+            {
                 value = PitchBendValue / 8192f;
+                ProcessPitchDown(-value, channel);
+                IsLastPitchDown = true;
+                IsLastPitchUp = false;
+            }
             else if (PitchBendValue > 0)
+            {
                 value = PitchBendValue / 8191f;
+                ProcessPitchUp(value, channel);
+                IsLastPitchDown = false;
+                IsLastPitchUp = true;
+            }
             else
+            {
                 value = 0;
 
-            // State update with a delta event
-            InputSystem.QueueDeltaStateEvent(_pitchBend, new Vector2(value, channel));
+                if (IsLastPitchDown)
+                    ProcessPitchDown(value, channel);
+                else if (IsLastPitchUp)
+                    ProcessPitchUp(value, channel);
+            }
 
-            // Control-change event invocation (only when it exists)
+            //State update with a delta event
+           InputSystem.QueueDeltaStateEvent(_pitchBend, new Vector2(value, channel));
+
+            //Control-change event invocation (only when it exists)
             var fvalue = value;
             if (_willPitchBendActions != null)
                 foreach (var action in _willPitchBendActions)
                     action(_pitchBend, fvalue);
+    }
+
+
+        Vector2 PitchUpValue = new Vector2();
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value">0.0to1.0f</param>
+        /// <param name="channel">0to15</param>
+        private void ProcessPitchUp(float value, byte channel)
+        {
+            PitchUpValue.x = value;
+            PitchUpValue.y = channel;
+            // State update with a delta event
+            InputSystem.QueueDeltaStateEvent(_pitchUp, PitchUpValue);
+
+            // Control-change event invocation (only when it exists)
+            var fvalue = value;
+            if (_willPitchUpActions != null)
+                foreach (var action in _willPitchUpActions)
+                    action(_pitchUp, fvalue);
+        }
+
+        Vector2 PitchDownValue = new Vector2();
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value">0.0to1.0f</param>
+        /// <param name="channel">0to15</param>
+        private void ProcessPitchDown(float value, byte channel)
+        {
+            PitchDownValue.x = value;
+            PitchDownValue.y = channel;
+            // State update with a delta event
+            InputSystem.QueueDeltaStateEvent(_pitchDown, PitchDownValue);
+
+            // Control-change event invocation (only when it exists)
+            var fvalue = value;
+            if (_willPitchDownActions != null)
+                foreach (var action in _willPitchDownActions)
+                    action(_pitchDown, fvalue);
         }
 
         #endregion
@@ -163,6 +230,8 @@ namespace Minis
                 _controlChanges[i] = GetChildControl<MidiCCControl>("DonoControl" + i.ToString("D3"));
             }
             _pitchBend = GetChildControl<MidiPitchBendControl>("PitchBend");
+            _pitchUp = GetChildControl<MidiPitchUpControl>("PitchUp");
+            _pitchDown = GetChildControl<MidiPitchDownControl>("PitchDown");
 
             // MIDI channel number determination
             // Here is a dirty trick: Parse the last two characters in the product
@@ -189,4 +258,3 @@ namespace Minis
     }
 
 }
-// namespace Minis
