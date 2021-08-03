@@ -80,6 +80,7 @@ namespace Minis
         MidiPitchBendControl _pitchBend;
         MidiPitchUpControl _pitchUp;
         MidiPitchDownControl _pitchDown;
+        MidiProgramChangeControl _programChange;
 
 
         List<Action<MidiNoteControl, float>> _willNoteOnActions;
@@ -88,6 +89,7 @@ namespace Minis
         List<Action<MidiPitchBendControl, float>> _willPitchBendActions;
         List<Action<MidiPitchUpControl, float>> _willPitchUpActions;
         List<Action<MidiPitchDownControl, float>> _willPitchDownActions;
+        List<Action<MidiProgramChangeControl, float>> _willProgramChangeActions;
 
         #endregion
 
@@ -170,6 +172,18 @@ namespace Minis
                     action(_pitchBend, fvalue);
     }
 
+        internal void ProcessProgramChange(byte value, byte channel)
+        {
+            //State update with a delta event
+            InputSystem.QueueDeltaStateEvent(_programChange, new Vector2(value, channel));
+
+            //Control-change event invocation (only when it exists)
+            var fvalue = value / 127f;
+            if (_willProgramChangeActions != null)
+                foreach (var action in _willProgramChangeActions)
+                    action(_programChange, fvalue);
+        }
+
 
         Vector2 PitchUpValue = new Vector2();
         /// <summary>
@@ -231,6 +245,7 @@ namespace Minis
             _pitchBend = GetChildControl<MidiPitchBendControl>("PitchBend");
             _pitchUp = GetChildControl<MidiPitchUpControl>("PitchUp");
             _pitchDown = GetChildControl<MidiPitchDownControl>("PitchDown");
+            _programChange = GetChildControl<MidiProgramChangeControl>("ProgramChange");
 
             // MIDI channel number determination
             // Here is a dirty trick: Parse the last two characters in the product

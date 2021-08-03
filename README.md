@@ -36,7 +36,14 @@ PitchUp: Vecotr2(value, channel)
 
 PitchDown: Vector2(value, channel)
     value = 0-1.0 (caution: Not a Negative number)
+    channnel = 0-15
+
+ProgramChange: Vector2(value, channel)
+    value = 0-127
+    channnel = 0-15
+
 
 Update
 ----------------------------------------------------------------
 1.1.0: AddPitchBend
+1.1.1: AddProgramChange

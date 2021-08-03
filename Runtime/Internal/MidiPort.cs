@@ -81,7 +81,7 @@ namespace Minis
                 var message = stackalloc byte [(int)size];
 
                 var stamp = RtMidiDll.InGetMessage(_rtmidi, message, ref size);
-                if (size != 3) break;
+                if (size == 0) break;
 
                 var status = message[0] >> 4;
                 var channel = (byte)(message[0] & 0x0f);
@@ -98,6 +98,8 @@ namespace Minis
                     GetChannelDevice(channel).ProcessNoteOff(data1, channel);
                 else if (status == 0xB)
                     GetChannelDevice(channel).ProcessControlChange(data1, data2, channel);
+                else if (status == 0xC)
+                    GetChannelDevice(channel).ProcessProgramChange(data1, channel);
                 else if (status == 0xE)
                     GetChannelDevice(channel).ProcessPitchBend(data1, data2, channel);
             }

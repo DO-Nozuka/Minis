@@ -284,5 +284,8 @@ namespace Minis
         public fixed byte pitchUp[1];
         [InputControl(name = "PitchDown", displayName = "PitchBendDown", shortDisplayName = "PitchDown", layout = "MidiPitchDown", offset = 2580)]
         public fixed byte pitchDown[1];
+        [InputControl(name = "ProgramChange", displayName = "ProgramChange", shortDisplayName = "PC", layout = "MidiProgramChange", offset = 2590)]
+        public fixed byte programChange[1];
+
     }
 }
