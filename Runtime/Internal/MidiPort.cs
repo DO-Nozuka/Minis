@@ -90,18 +90,30 @@ namespace Minis
 
                 if (data1 > 0x7f || data2 > 0x7f) continue; // Invalid data
 
+                var noteOn = status == 9 && data2 != 0;
                 var noteOff = (status == 8) || (status == 9 && data2 == 0);
 
-                if (status == 9 && !noteOff)
-                    GetChannelDevice(channel).ProcessNoteOn(data1, data2, channel);
-                else if (noteOff)
-                    GetChannelDevice(channel).ProcessNoteOff(data1, channel);
-                else if (status == 0xB)
-                    GetChannelDevice(channel).ProcessControlChange(data1, data2, channel);
-                else if (status == 0xC)
-                    GetChannelDevice(channel).ProcessProgramChange(data1, channel);
-                else if (status == 0xE)
-                    GetChannelDevice(channel).ProcessPitchBend(data1, data2, channel);
+                if (noteOn && size == 3)
+                {
+                    GetChannelDevice(channel).ProcessNoteOn(message[0], message[1], message[2]);
+                }
+                else if (noteOff && size == 3)
+                {
+                    message[0] = (byte)(0x80 + channel);    //0x9n vel=0 => 0x8n vel=0ÅB
+                    GetChannelDevice(channel).ProcessNoteOff(message[0], message[1], message[2]);
+                }
+                else if (status == 0xB && size == 3)
+                {
+                    GetChannelDevice(channel).ProcessControlChange(message[0], message[1], message[2]);
+                }
+                else if (status == 0xC && size == 2)
+                {
+                    GetChannelDevice(channel).ProcessProgramChange(message[0], message[1]);
+                }
+                else if (status == 0xE && size == 3)
+                {
+                    GetChannelDevice(channel).ProcessPitchBend(message[0], message[1], message[2]);
+                }
             }
         }
 

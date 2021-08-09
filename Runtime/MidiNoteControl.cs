@@ -3,7 +3,7 @@ namespace Minis
     //
     // Custom control class for MIDI nots
     //
-    public class MidiNoteControl : UnityEngine.InputSystem.Controls.Vector2Control
+    public class MidiNoteControl : UnityEngine.InputSystem.Controls.Vector3Control
     {
         public MidiNoteControl()
         {

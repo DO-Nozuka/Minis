@@ -1,6 +1,6 @@
 namespace Minis
 {
-    public class MidiPitchBendControl : UnityEngine.InputSystem.Controls.Vector2Control
+    public class MidiPitchBendControl : UnityEngine.InputSystem.Controls.Vector3Control
     {
         public MidiPitchBendControl()
         {

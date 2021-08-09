@@ -1,6 +1,6 @@
 namespace Minis
 {
-    public class MidiProgramChangeControl : UnityEngine.InputSystem.Controls.Vector2Control
+    public class MidiProgramChangeControl : UnityEngine.InputSystem.Controls.Vector3Control
     {
         public MidiProgramChangeControl()
         {

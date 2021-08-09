@@ -1,6 +1,6 @@
 namespace Minis
 {
-    public class MidiPitchDownControl : UnityEngine.InputSystem.Controls.Vector2Control
+    public class MidiPitchDownControl : UnityEngine.InputSystem.Controls.Vector3Control
     {
         public MidiPitchDownControl()
         {

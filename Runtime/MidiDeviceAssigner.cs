@@ -21,7 +21,7 @@ namespace Minis
             if (midiDevice == null) return false;
 
             // Channel matching
-            if (_channel >= 0 && midiDevice.channel != _channel) return false;
+            if (_channel >= 0 && midiDevice._channel != _channel) return false;
 
             // Product name matching
             if (!string.IsNullOrEmpty(_productName) &&
