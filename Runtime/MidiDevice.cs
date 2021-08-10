@@ -205,28 +205,28 @@ namespace Minis
         //----
         private void ProcessAnyNoteOn(byte stats, byte note, byte velocity)
         {
-            InputSystem.QueueDeltaStateEvent(_anyNote, new Vector3(stats, note, velocity));
+            _anyNote.QueueValueChange(new Vector3(stats, note, velocity));
         }
         private void ProcessAnyNoteOff(byte stats, byte note, byte velocity)
         {
-            InputSystem.QueueDeltaStateEvent(_anyNote, new Vector3(stats, note, velocity));
+            _anyNote.QueueValueChange(new Vector3(stats, note, velocity));
         }
 
         private void ProcessAnyWhiteNoteOn(byte stats, byte note, byte velocity)
         {
-
+            _anyWhiteNote.QueueValueChange(new Vector3(stats, note, velocity));
         }
         private void ProcessAnyWhiteNoteOff(byte stats, byte note, byte velocity)
         {
-
+            _anyWhiteNote.QueueValueChange(new Vector3(stats, note, velocity));
         }
         private void ProcessAnyBlackNoteOn(byte stats, byte note, byte velocity)
         {
-
+            _anyBlackNote.QueueValueChange(new Vector3(stats, note, velocity));
         }
         private void ProcessAnyBlackNoteOff(byte stats, byte note, byte velocity)
         {
-
+            _anyBlackNote.QueueValueChange(new Vector3(stats, note, velocity));
         }
 
         /// <summary>
