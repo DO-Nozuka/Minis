@@ -103,7 +103,7 @@ namespace Minis
         internal void ProcessNoteOn(byte stats, byte note, byte velocity)
         {
             // State update with a delta event
-            InputSystem.QueueDeltaStateEvent(_notes[note], new Vector3(stats, note, velocity));
+            _notes[note].QueueValueChange(new Vector3(stats, note, velocity));
 
             // Send to additional controls
             ProcessAnyNoteOn(stats, note, velocity);
@@ -122,9 +122,7 @@ namespace Minis
         internal void ProcessNoteOff(byte stats, byte note, byte velocity)
         {
             // State update with a delta event
-            InputSystem.QueueDeltaStateEvent(_notes[note], new Vector3(stats, note, velocity));
-            //InputSystem.QueueDeltaStateEvent(_notes[note], new Vector3(0, 0, 0));     //canceled
-            //InputSystem.QueueDeltaStateEvent(_notes[note], new Vector3(0.1f, 0, 0));  //performed
+            _notes[note].QueueValueChange(new Vector3(stats, note, velocity));
 
             // Send to additional controls
             ProcessAnyNoteOff(stats, note, velocity);
@@ -143,7 +141,7 @@ namespace Minis
         {
             // State update with a delta event
             var channel = (byte)(stats & 0x0F);
-            InputSystem.QueueDeltaStateEvent(_controlChanges[number], new Vector3(stats, number, value));
+            _controlChanges[number].QueueValueChange(new Vector3(stats, number, value));
             // Control-change event invocation (only when it exists)
             var fvalue = value / 127.0f;
             if (_willControlChangeActions != null)
@@ -182,7 +180,7 @@ namespace Minis
             }
 
             //State update with a delta event
-            InputSystem.QueueDeltaStateEvent(_pitchBend, new Vector3(stats, value1, value2));
+            _pitchBend.QueueValueChange(new Vector3(stats, value1, value2));
 
             //Control-change event invocation (only when it exists)
             var fvalue = value;
@@ -195,7 +193,7 @@ namespace Minis
         {
             //State update with a delta event
             var channel = (byte)(stats & 0x0F);
-            InputSystem.QueueDeltaStateEvent(_programChange, new Vector2(stats, value));
+            _programChange.QueueValueChange(new Vector3(stats, value, 0x00));
 
             //Control-change event invocation (only when it exists)
             var fvalue = value / 127f;
