@@ -2,6 +2,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.LowLevel;
 using System.Linq;
+using UnityEngine.InputSystem.Controls;
 
 namespace Minis
 {
@@ -25,6 +26,7 @@ namespace Minis
             InputSystem.RegisterLayout<MidiPitchUpControl>("MidiPitchUp");
             InputSystem.RegisterLayout<MidiPitchDownControl>("MidiPitchDown");
             InputSystem.RegisterLayout<MidiProgramChangeControl>("MidiProgramChange");
+            InputSystem.RegisterLayout<ButtonControl>("MidiKeyNote");
 
             InputSystem.RegisterLayout<MidiDevice>(
                 matches: new InputDeviceMatcher().WithInterface("Minis")

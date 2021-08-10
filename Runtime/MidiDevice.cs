@@ -22,13 +22,13 @@ namespace Minis
         // The first channel returns 0.
         public int _channel { get; private set; }
 
-        // Get an input control object bound for a specific note.
-        public MidiNoteControl GetNote(int noteNumber)
-          => _notes[noteNumber];
+        //// Get an input control object bound for a specific note.
+        //public MidiNoteControl GetNote(int noteNumber)
+        //  => _notes[noteNumber];
 
-        // Get an input control object bound for a specific control element (CC).
-        public MidiCCControl GetControl(int controlNumber)
-          => _controlChanges[controlNumber];
+        //// Get an input control object bound for a specific control element (CC).
+        //public MidiCCControl GetControl(int controlNumber)
+        //  => _controlChanges[controlNumber];
 
         //// Will-note-on event
         ////
@@ -75,11 +75,16 @@ namespace Minis
 
         #region Internal objects
 
-        // Standard controls
+        // Standard controls(Vector3)
         MidiNoteControl[] _notes;
         MidiCCControl[] _controlChanges;
         MidiPitchBendControl _pitchBend;
         MidiProgramChangeControl _programChange;
+
+        // Key controls
+        KeyControl[] _keyNotes;
+        ButtonControl _keyNote;
+        KeyControl k;
 
         // Additional controls
         MidiNoteControl _anyNote;
@@ -87,23 +92,38 @@ namespace Minis
         MidiNoteControl _anyBlackNote;
         MidiPitchUpControl _pitchUp;
         MidiPitchDownControl _pitchDown;
+        ButtonControl _anyKeyNote;
+        ButtonControl _anyWhiteKeyNote;
+        ButtonControl _anyBlackKeyNote;
 
-        List<Action<MidiNoteControl, float>> _willNoteOnActions;
-        List<Action<MidiNoteControl>> _willNoteOffActions;
-        List<Action<MidiCCControl, float>> _willControlChangeActions;
-        List<Action<MidiPitchBendControl, float>> _willPitchBendActions;
-        List<Action<MidiPitchUpControl, float>> _willPitchUpActions;
-        List<Action<MidiPitchDownControl, float>> _willPitchDownActions;
-        List<Action<MidiProgramChangeControl, float>> _willProgramChangeActions;
+        //List<Action<MidiNoteControl, float>> _willNoteOnActions;
+        //List<Action<MidiNoteControl>> _willNoteOffActions;
+        //List<Action<MidiCCControl, float>> _willControlChangeActions;
+        //List<Action<MidiPitchBendControl, float>> _willPitchBendActions;
+        //List<Action<MidiPitchUpControl, float>> _willPitchUpActions;
+        //List<Action<MidiPitchDownControl, float>> _willPitchDownActions;
+        //List<Action<MidiProgramChangeControl, float>> _willProgramChangeActions;
+
+        private static readonly float KeyOn = 1.0f;
+        private static readonly float KeyOff = 0.0f;
 
         #endregion
 
         #region MIDI event receiver (invoked from MidiPort)
 
+        MidiDeviceState state = new MidiDeviceState();
         internal void ProcessNoteOn(byte stats, byte note, byte velocity)
         {
             // State update with a delta event
             _notes[note].QueueValueChange(new Vector3(stats, note, velocity));
+            //InputSystem.QueueDeltaStateEvent(_keyNotes[note], true);
+            //k.EvaluateMagnitude();
+            state._keyNotes = 0x0001;
+            InputSystem.QueueStateEvent(this, state);
+            
+            //_keyNote.QueueValueChange(1.0f);
+            //_keyNotes[note].QueueValueChange(51.0f);
+            //var pressed = _keyNotes[note].isPressed;
 
             // Send to additional controls
             ProcessAnyNoteOn(stats, note, velocity);
@@ -113,16 +133,19 @@ namespace Minis
                 ProcessAnyBlackNoteOn(stats, note, velocity);
             
             // Note-on event invocation (only when it exists)
-            var fvelocity = velocity / 127.0f;
-            if (_willNoteOnActions != null)
-                foreach (var action in _willNoteOnActions)
-                    action(_notes[note], fvelocity);
+            //var fvelocity = velocity / 127.0f;
+            //if (_willNoteOnActions != null)
+            //    foreach (var action in _willNoteOnActions)
+            //        action(_notes[note], fvelocity);
         }
 
         internal void ProcessNoteOff(byte stats, byte note, byte velocity)
         {
             // State update with a delta event
             _notes[note].QueueValueChange(new Vector3(stats, note, velocity));
+            //_keyNotes[note].QueueValueChange(1.0f);
+            state._keyNotes = 0x0000;
+            InputSystem.QueueStateEvent(this, state);
 
             // Send to additional controls
             ProcessAnyNoteOff(stats, note, velocity);
@@ -131,10 +154,10 @@ namespace Minis
             else
                 ProcessAnyBlackNoteOff(stats, note, velocity);
 
-            // Note-off event invocation (only when it exists)
-            if (_willNoteOffActions != null)
-                foreach (var action in _willNoteOffActions)
-                    action(_notes[note]);
+            //// Note-off event invocation (only when it exists)
+            //if (_willNoteOffActions != null)
+            //    foreach (var action in _willNoteOffActions)
+            //        action(_notes[note]);
         }
 
         internal void ProcessControlChange(byte stats, byte number, byte value)
@@ -143,10 +166,10 @@ namespace Minis
             var channel = (byte)(stats & 0x0F);
             _controlChanges[number].QueueValueChange(new Vector3(stats, number, value));
             // Control-change event invocation (only when it exists)
-            var fvalue = value / 127.0f;
-            if (_willControlChangeActions != null)
-                foreach (var action in _willControlChangeActions)
-                    action(_controlChanges[number], fvalue);
+            //var fvalue = value / 127.0f;
+            //if (_willControlChangeActions != null)
+            //    foreach (var action in _willControlChangeActions)
+            //        action(_controlChanges[number], fvalue);
         }
 
 
@@ -182,11 +205,11 @@ namespace Minis
             //State update with a delta event
             _pitchBend.QueueValueChange(new Vector3(stats, value1, value2));
 
-            //Control-change event invocation (only when it exists)
-            var fvalue = value;
-            if (_willPitchBendActions != null)
-                foreach (var action in _willPitchBendActions)
-                    action(_pitchBend, fvalue);
+            ////Control-change event invocation (only when it exists)
+            //var fvalue = value;
+            //if (_willPitchBendActions != null)
+            //    foreach (var action in _willPitchBendActions)
+            //        action(_pitchBend, fvalue);
         }
 
         internal void ProcessProgramChange(byte stats, byte value)
@@ -195,38 +218,44 @@ namespace Minis
             var channel = (byte)(stats & 0x0F);
             _programChange.QueueValueChange(new Vector3(stats, value, 0x00));
 
-            //Control-change event invocation (only when it exists)
-            var fvalue = value / 127f;
-            if (_willProgramChangeActions != null)
-                foreach (var action in _willProgramChangeActions)
-                    action(_programChange, fvalue);
+            ////Control-change event invocation (only when it exists)
+            //var fvalue = value / 127f;
+            //if (_willProgramChangeActions != null)
+            //    foreach (var action in _willProgramChangeActions)
+            //        action(_programChange, fvalue);
         }
 
         //----
         private void ProcessAnyNoteOn(byte stats, byte note, byte velocity)
         {
             _anyNote.QueueValueChange(new Vector3(stats, note, velocity));
+            _anyKeyNote.QueueValueChange(KeyOn);
         }
         private void ProcessAnyNoteOff(byte stats, byte note, byte velocity)
         {
             _anyNote.QueueValueChange(new Vector3(stats, note, velocity));
+            _anyKeyNote.QueueValueChange(KeyOff);
         }
 
         private void ProcessAnyWhiteNoteOn(byte stats, byte note, byte velocity)
         {
             _anyWhiteNote.QueueValueChange(new Vector3(stats, note, velocity));
+            _anyWhiteKeyNote.QueueValueChange(KeyOn);
         }
         private void ProcessAnyWhiteNoteOff(byte stats, byte note, byte velocity)
         {
             _anyWhiteNote.QueueValueChange(new Vector3(stats, note, velocity));
+            _anyWhiteKeyNote.QueueValueChange(KeyOff);
         }
         private void ProcessAnyBlackNoteOn(byte stats, byte note, byte velocity)
         {
             _anyBlackNote.QueueValueChange(new Vector3(stats, note, velocity));
+            _anyBlackKeyNote.QueueValueChange(KeyOn);
         }
         private void ProcessAnyBlackNoteOff(byte stats, byte note, byte velocity)
         {
             _anyBlackNote.QueueValueChange(new Vector3(stats, note, velocity));
+            _anyBlackKeyNote.QueueValueChange(KeyOff);
         }
 
         /// <summary>
@@ -239,11 +268,11 @@ namespace Minis
             // State update with a delta event
             InputSystem.QueueDeltaStateEvent(_pitchUp, new Vector3(stats, value1, value2));
 
-            // Control-change event invocation (only when it exists)
-            var fvalue = GetPitchBendRate(value1, value2);
-            if (_willPitchUpActions != null)
-                foreach (var action in _willPitchUpActions)
-                    action(_pitchUp, fvalue);
+            //// Control-change event invocation (only when it exists)
+            //var fvalue = GetPitchBendRate(value1, value2);
+            //if (_willPitchUpActions != null)
+            //    foreach (var action in _willPitchUpActions)
+            //        action(_pitchUp, fvalue);
         }
 
         /// <summary>
@@ -256,11 +285,11 @@ namespace Minis
             // State update with a delta event
             InputSystem.QueueDeltaStateEvent(_pitchDown, new Vector3(stats, value1, value2));
 
-            // Control-change event invocation (only when it exists)
-            var fvalue = GetPitchBendRate(value1, value2);
-            if (_willPitchDownActions != null)
-                foreach (var action in _willPitchDownActions)
-                    action(_pitchDown, fvalue);
+            //// Control-change event invocation (only when it exists)
+            //var fvalue = GetPitchBendRate(value1, value2);
+            //if (_willPitchDownActions != null)
+            //    foreach (var action in _willPitchDownActions)
+            //        action(_pitchDown, fvalue);
         }
 
         #endregion
@@ -273,13 +302,22 @@ namespace Minis
 
             // Populate the input controls.
             _notes = new MidiNoteControl[128];
+            _keyNotes = new KeyControl[13];
             _controlChanges = new MidiCCControl[128];
 
             for (var i = 0; i < 128; i++)
             {
                 _notes[i] = GetChildControl<MidiNoteControl>("DonoNote" + i.ToString("D3"));
+                //_keyNotes[i] = GetChildControl<ButtonControl>("KeyNote" + i.ToString("D3"));
+                //_keyNotes[i].pressPoint = 0.5f;
+                _keyNote = GetChildControl<KeyControl>("KeyNote036");
                 _controlChanges[i] = GetChildControl<MidiCCControl>("DonoControl" + i.ToString("D3"));
             }
+            for(var i = 36; i < 49; i++)
+            {
+                _keyNotes[i-36] = GetChildControl<KeyControl>("KeyNote" + i.ToString("D3"));
+            }
+
             _pitchBend = GetChildControl<MidiPitchBendControl>("PitchBend");
             _programChange = GetChildControl<MidiProgramChangeControl>("ProgramChange");
 
@@ -288,6 +326,10 @@ namespace Minis
             _anyBlackNote = GetChildControl<MidiNoteControl>("AnyBlackNote");
             _pitchUp = GetChildControl<MidiPitchUpControl>("PitchUp");
             _pitchDown = GetChildControl<MidiPitchDownControl>("PitchDown");
+
+            _anyKeyNote = GetChildControl<ButtonControl>("AnyKeyNote");
+            _anyWhiteKeyNote = GetChildControl<ButtonControl>("AnyWhiteKeyNote");
+            _anyBlackKeyNote = GetChildControl<ButtonControl>("AnyBlackKeyNote");
 
             // MIDI channel number determination
             // Here is a dirty trick: Parse the last two characters in the product
