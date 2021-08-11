@@ -1,6 +1,7 @@
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem;
 using RtMidiDll = RtMidi.Unmanaged;
+using Minis.Runtime.MidiSwitchDevice;
 
 namespace Minis
 {
@@ -15,6 +16,7 @@ namespace Minis
         RtMidiDll.Wrapper* _rtmidi;
         string _portName;
         MidiDevice [] _channels = new MidiDevice[16];
+        private MidiSwitchDevice _midiSwitchDevice = new MidiSwitchDevice(); 
 
         // Get a device object bound with a specified channel.
         // Create a new device if it doesn't exist.
