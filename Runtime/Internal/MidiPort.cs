@@ -15,8 +15,8 @@ namespace Minis
 
         RtMidiDll.Wrapper* _rtmidi;
         string _portName;
-        MidiDevice [] _channels = new MidiDevice[16];
-        private MidiSwitchDevice _midiSwitchDevice = new MidiSwitchDevice(); 
+        private MidiDevice [] _channels = new MidiDevice[16];
+        private MidiSwitchDevice __midiSwitchDevice;
 
         // Get a device object bound with a specified channel.
         // Create a new device if it doesn't exist.
@@ -35,10 +35,23 @@ namespace Minis
             return _channels[channel];
         }
 
+        private MidiSwitchDevice GetMidiSwitchDevice()
+        {
+            var desc = new InputDeviceDescription
+            {
+                interfaceName = "MidiSwitch",
+                deviceClass = "MIDI",
+                product = "MidiSwitchDevice",
+                capabilities = "switch"
+            };
+            __midiSwitchDevice ??= (MidiSwitchDevice)InputSystem.AddDevice(desc);
+
+            return __midiSwitchDevice;
+        }
+
         #endregion
 
         #region Public methods
-
         public MidiPort(int portNumber, string portName)
         {
             _portName = portName;
@@ -68,7 +81,10 @@ namespace Minis
             _rtmidi = null;
 
             foreach (var dev in _channels)
-                if (dev != null) InputSystem.RemoveDevice(dev);
+                if (dev is object)
+                    InputSystem.RemoveDevice(dev);
+            if (__midiSwitchDevice is object)
+                InputSystem.RemoveDevice(__midiSwitchDevice);
 
             System.GC.SuppressFinalize(this);
         }
@@ -98,11 +114,13 @@ namespace Minis
                 if (noteOn && size == 3)
                 {
                     GetChannelDevice(channel).ProcessNoteOn(message[0], message[1], message[2]);
+                    GetMidiSwitchDevice().ProcessNoteOn(message[0], message[1], message[2]);
                 }
                 else if (noteOff && size == 3)
                 {
                     message[0] = (byte)(0x80 + channel);    //0x9n vel=0 => 0x8n vel=0ÅB
                     GetChannelDevice(channel).ProcessNoteOff(message[0], message[1], message[2]);
+                    GetMidiSwitchDevice().ProcessNoteOff(message[0], message[1], message[2]);
                 }
                 else if (status == 0xB && size == 3)
                 {

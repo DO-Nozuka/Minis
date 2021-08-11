@@ -10,18 +10,32 @@ namespace Minis.Runtime.MidiSwitchDevice
     [InputControlLayout(stateType = typeof(MidiSwitchDeviceState), displayName = "MIDI Switch Device")]
     public class MidiSwitchDevice : InputDevice
     {
-
         MidiSwitchDeviceState state = new MidiSwitchDeviceState();
-        internal void ProcessNoteOn(byte stats, byte note, byte velocity)
+        KeyControl[] _notes;
+        public void ProcessNoteOn(byte stats, byte note, byte velocity)
         {
-            state.NoteOn(note);
+            _notes[note].QueueValueChange(1.0f);
         }
 
 
-        internal void ProcessNoteOff(byte stats, byte note, byte velocity)
+        public void ProcessNoteOff(byte stats, byte note, byte velocity)
         {
-            state.NoteOff(note);
+            _notes[note].QueueValueChange(0.0f);
         }
+
+        protected override void FinishSetup()
+        {
+            base.FinishSetup();
+
+            // Populate the input controls.
+            _notes = new KeyControl[128];
+            for(int i = 0; i < 128; i++)
+            {
+                _notes[i] = GetChildControl<KeyControl>("KeyNote" + i.ToString("D3"));
+            }
+        }
+
+
 
         #region Current Device
         public static MidiSwitchDevice current { get; private set; }

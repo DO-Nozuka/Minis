@@ -145,54 +145,6 @@ namespace Minis.Runtime.MidiSwitchDevice
 
         public FourCC format => new FourCC('M', 'I', 'D', 'S'); //MIDi Switch
         private fixed byte _keyNotes[kSizeInBytes];
-
-        #region Methods
-        public void NoteOn(byte key)
-        {
-            Set(key, true);
-        }
-
-        public void NoteOff(byte key)
-        {
-            Set(key, false);
-        }
-
-        private void Set(byte key, bool state)
-        {
-            fixed (byte* keysPtr = _keyNotes)
-            {
-                WriteSingleBit(keysPtr, key, state);
-            }
-        }
-
-        private static void WriteSingleBit(void* ptr, uint bitOffset, bool value)
-        {
-            if (bitOffset < 8)
-            {
-                if (value)
-                    *(byte*)ptr |= (byte)(1 << (int)bitOffset);
-                else
-                    *(byte*)ptr &= (byte)~(1 << (int)bitOffset);
-            }
-            else if (bitOffset < 32)
-            {
-                if (value)
-                    *(int*)ptr |= 1 << (int)bitOffset;
-                else
-                    *(int*)ptr &= ~(1 << (int)bitOffset);
-            }
-            else
-            {
-                var byteOffset = bitOffset / 8;
-                bitOffset %= 8;
-
-                if (value)
-                    *((byte*)ptr + byteOffset) |= (byte)(1 << (int)bitOffset);
-                else
-                    *((byte*)ptr + byteOffset) &= (byte)~(1 << (int)bitOffset);
-            }
-        }
-        #endregion
     }
 
 }

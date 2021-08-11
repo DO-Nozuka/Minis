@@ -3,6 +3,7 @@ using UnityEngine.InputSystem.Layouts;
 using UnityEngine.LowLevel;
 using System.Linq;
 using UnityEngine.InputSystem.Controls;
+using Minis.Runtime.MidiSwitchDevice;
 
 namespace Minis
 {
@@ -26,11 +27,15 @@ namespace Minis
             InputSystem.RegisterLayout<MidiPitchUpControl>("MidiPitchUp");
             InputSystem.RegisterLayout<MidiPitchDownControl>("MidiPitchDown");
             InputSystem.RegisterLayout<MidiProgramChangeControl>("MidiProgramChange");
-            InputSystem.RegisterLayout<ButtonControl>("MidiKeyNote");
+            InputSystem.RegisterLayout<KeyControl>("Key");
 
             InputSystem.RegisterLayout<MidiDevice>(
                 matches: new InputDeviceMatcher().WithInterface("Minis")
-            );
+                );
+
+            InputSystem.RegisterLayout<MidiSwitchDevice>(
+                matches: new InputDeviceMatcher().WithInterface("MidiSwitch")
+                );
         }
 
         #endregion
