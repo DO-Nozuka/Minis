@@ -1,6 +1,7 @@
 using Dono.MidiUtilities.Runtime;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.Layouts;
 
 namespace Minis.Runtime.MidiVector3Device
@@ -22,17 +23,17 @@ namespace Minis.Runtime.MidiVector3Device
         #region Internal objects
 
         // Standard controls(Vector3)
-        MidiNoteControl[] _notes;
-        MidiCCControl[] _controlChanges;
-        MidiPitchBendControl _pitchBend;
-        MidiProgramChangeControl _programChange;
+        Vector3Control[] _notes;
+        Vector3Control[] _controlChanges;
+        Vector3Control _pitchBend;
+        Vector3Control _programChange;
 
         // Additional controls
-        MidiNoteControl _anyNote;
-        MidiNoteControl _anyWhiteNote;
-        MidiNoteControl _anyBlackNote;
-        MidiPitchUpControl _pitchUp;
-        MidiPitchDownControl _pitchDown;
+        Vector3Control _anyNote;
+        Vector3Control _anyWhiteNote;
+        Vector3Control _anyBlackNote;
+        Vector3Control _pitchUp;
+        Vector3Control _pitchDown;
 
 
         #endregion
@@ -169,23 +170,23 @@ namespace Minis.Runtime.MidiVector3Device
             base.FinishSetup();
 
             // Populate the input controls.
-            _notes = new MidiNoteControl[128];
-            _controlChanges = new MidiCCControl[128];
+            _notes = new Vector3Control[128];
+            _controlChanges = new Vector3Control[128];
 
             for (var i = 0; i < 128; i++)
             {
-                _notes[i] = GetChildControl<MidiNoteControl>("DonoNote" + i.ToString("D3"));
-                _controlChanges[i] = GetChildControl<MidiCCControl>("DonoControl" + i.ToString("D3"));
+                _notes[i] = GetChildControl<Vector3Control>("DonoNote" + i.ToString("D3"));
+                _controlChanges[i] = GetChildControl<Vector3Control>("DonoControl" + i.ToString("D3"));
             }
 
-            _pitchBend = GetChildControl<MidiPitchBendControl>("PitchBend");
-            _programChange = GetChildControl<MidiProgramChangeControl>("ProgramChange");
+            _pitchBend = GetChildControl<Vector3Control>("PitchBend");
+            _programChange = GetChildControl<Vector3Control>("ProgramChange");
 
-            _anyNote = GetChildControl<MidiNoteControl>("AnyNote");
-            _anyWhiteNote = GetChildControl<MidiNoteControl>("AnyWhiteNote");
-            _anyBlackNote = GetChildControl<MidiNoteControl>("AnyBlackNote");
-            _pitchUp = GetChildControl<MidiPitchUpControl>("PitchUp");
-            _pitchDown = GetChildControl<MidiPitchDownControl>("PitchDown");
+            _anyNote = GetChildControl<Vector3Control>("AnyNote");
+            _anyWhiteNote = GetChildControl<Vector3Control>("AnyWhiteNote");
+            _anyBlackNote = GetChildControl<Vector3Control>("AnyBlackNote");
+            _pitchUp = GetChildControl<Vector3Control>("PitchUp");
+            _pitchDown = GetChildControl<Vector3Control>("PitchDown");
 
             // MIDI channel number determination
             // Here is a dirty trick: Parse the last two characters in the product
