@@ -1,6 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 using System.Linq;
+using Minis.Runtime.MidiVector3Device;
 
 namespace Minis
 {

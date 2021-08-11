@@ -146,5 +146,4 @@ namespace Minis.Runtime.MidiSwitchDevice
         public FourCC format => new FourCC('M', 'I', 'D', 'S'); //MIDi Switch
         private fixed byte _keyNotes[kSizeInBytes];
     }
-
 }

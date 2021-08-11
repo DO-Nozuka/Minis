@@ -1,9 +1,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Users;
-using UnityEngine.InputSystem.Layouts;
 
-namespace Minis
+namespace Minis.Runtime.MidiVector3Device
 {
     //
     // MIDI device assigner class that pairs a PlayerInput with a MIDI device
@@ -17,7 +16,7 @@ namespace Minis
         bool TryPairing(InputDevice device)
         {
             // Check if it's a MIDI device.
-            var midiDevice = device as Minis.MidiDevice;
+            var midiDevice = device as MidiVector3Device;
             if (midiDevice == null) return false;
 
             // Channel matching

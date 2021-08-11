@@ -2,6 +2,7 @@ using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem;
 using RtMidiDll = RtMidi.Unmanaged;
 using Minis.Runtime.MidiSwitchDevice;
+using Minis.Runtime.MidiVector3Device;
 
 namespace Minis
 {
@@ -15,12 +16,12 @@ namespace Minis
 
         RtMidiDll.Wrapper* _rtmidi;
         string _portName;
-        private MidiDevice [] _channels = new MidiDevice[16];
+        private MidiVector3Device [] _channels = new MidiVector3Device[16];
         private MidiSwitchDevice __midiSwitchDevice;
 
         // Get a device object bound with a specified channel.
         // Create a new device if it doesn't exist.
-        MidiDevice GetChannelDevice(int channel)
+        MidiVector3Device GetChannelDevice(int channel)
         {
             if (_channels[channel] == null)
             {
@@ -30,7 +31,7 @@ namespace Minis
                     product = _portName + " Channel " + channel,
                     capabilities = "{\"channel\":" + channel + "}"
                 };
-                _channels[channel] = (MidiDevice)InputSystem.AddDevice(desc);
+                _channels[channel] = (MidiVector3Device)InputSystem.AddDevice(desc);
             }
             return _channels[channel];
         }

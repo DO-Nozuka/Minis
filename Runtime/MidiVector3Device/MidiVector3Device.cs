@@ -1,19 +1,15 @@
-using System;
-using System.Collections.Generic;
+using Dono.MidiUtilities.Runtime;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.Layouts;
-using UnityEngine.InputSystem.LowLevel;
-using Dono.MidiUtilities.Runtime;
 
-namespace Minis
+namespace Minis.Runtime.MidiVector3Device
 {
     //
     // Custom input device class that processes input from a MIDI channel
     //
     [InputControlLayout(stateType = typeof(MidiDeviceState), displayName = "MIDI Device")]
-    public sealed class MidiDevice : InputDevice
+    public sealed class MidiVector3Device : InputDevice
     {
         #region Public accessors
 
@@ -82,7 +78,7 @@ namespace Minis
         public void ProcessPitchBend(byte stats, byte value1, byte value2)
         {
             //var channel = (byte)(stats & 0x0F);
-            var value = GetPitchBendValue(value1, value2);
+            var value = MidiMessage.GetPitchBendValue(value1, value2);
 
             if (value < 0)
             {
@@ -98,8 +94,6 @@ namespace Minis
             }
             else
             {
-                value = 0;
-
                 if (IsLastPitchDown)
                     ProcessPitchDown(stats, value1, value2);
                 else if (IsLastPitchUp)
@@ -200,7 +194,7 @@ namespace Minis
             _channel = int.Parse(product.Substring(product.Length - 2));
         }
 
-        public static MidiDevice current { get; private set; }
+        public static MidiVector3Device current { get; private set; }
 
         public override void MakeCurrent()
         {
@@ -216,20 +210,6 @@ namespace Minis
 
         #endregion
 
-        #region static function
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value1"></param>
-        /// <param name="value2"></param>
-        /// <returns></returns>
-        public int GetPitchBendValue(byte value1, byte value2) => (value2 << 7) + value1 - 8192;
-        public float GetPitchBendRate(byte value1, byte value2)
-        {
-            var value = GetPitchBendValue(value1, value2);
-            return value > 0 ? value / 8191f : value / 8192f;
-        }
-        #endregion
     }
 
 }

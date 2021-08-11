@@ -1,4 +1,5 @@
-namespace Minis
+namespace Minis.Runtime.MidiVector3Device
+
 {
     //
     // Custom control class for MIDI controls
@@ -9,14 +10,7 @@ namespace Minis
         {
             m_StateBlock.format =
                 UnityEngine.InputSystem.LowLevel.InputStateBlock.FormatByte;
-
-            // AxisControl parameters
-            //normalize = true;
-            //normalizeMax = 0.49803921568f;
         }
-
-        // Calculate control number from offset
-        public int controlNumber { get { return (int)stateOffsetRelativeToDeviceRoot - 128; } }
     }
 }
 

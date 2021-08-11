@@ -2,7 +2,8 @@
     "name": "Minis.Runtime.MidiSwitchDevice",
     "rootNamespace": "",
     "references": [
-        "GUID:75469ad4d38634e559750d17036d5f7c"
+        "GUID:75469ad4d38634e559750d17036d5f7c",
+        "GUID:e348eb0bc7ba495499081c854aa42f2d"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -4,6 +4,7 @@ using UnityEngine.LowLevel;
 using System.Linq;
 using UnityEngine.InputSystem.Controls;
 using Minis.Runtime.MidiSwitchDevice;
+using Minis.Runtime.MidiVector3Device;
 
 namespace Minis
 {
@@ -29,7 +30,7 @@ namespace Minis
             InputSystem.RegisterLayout<MidiProgramChangeControl>("MidiProgramChange");
             InputSystem.RegisterLayout<KeyControl>("Key");
 
-            InputSystem.RegisterLayout<MidiDevice>(
+            InputSystem.RegisterLayout<MidiVector3Device>(
                 matches: new InputDeviceMatcher().WithInterface("Minis")
                 );
 
