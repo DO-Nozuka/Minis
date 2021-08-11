@@ -22,12 +22,12 @@ namespace Minis
 
         static void RegisterLayout()
         {
-            InputSystem.RegisterLayout<Vector3Control>("MidiNote");
-            InputSystem.RegisterLayout<Vector3Control>("MidiValue");
-            InputSystem.RegisterLayout<Vector3Control>("MidiPitch");
-            InputSystem.RegisterLayout<Vector3Control>("MidiPitchUp");
-            InputSystem.RegisterLayout<Vector3Control>("MidiPitchDown");
-            InputSystem.RegisterLayout<Vector3Control>("MidiProgramChange");
+            InputSystem.RegisterLayout<MidiNoteControl>("MidiNote");
+            InputSystem.RegisterLayout<MidiCCControl>("MidiValue");
+            InputSystem.RegisterLayout<MidiPitchBendControl>("MidiPitch");
+            InputSystem.RegisterLayout<MidiPitchUpControl>("MidiPitchUp");
+            InputSystem.RegisterLayout<MidiPitchDownControl>("MidiPitchDown");
+            InputSystem.RegisterLayout<MidiProgramChangeControl>("MidiProgramChange");
             InputSystem.RegisterLayout<KeyControl>("Key");
 
             InputSystem.RegisterLayout<MidiVector3Device>(
