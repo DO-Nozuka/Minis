@@ -38,14 +38,17 @@ namespace Minis
 
         private MidiSwitchDevice GetMidiSwitchDevice()
         {
-            var desc = new InputDeviceDescription
+            if (__midiSwitchDevice == null)
             {
-                interfaceName = "MidiSwitch",
-                deviceClass = "MIDI",
-                product = "MidiSwitchDevice",
-                capabilities = "switch"
-            };
-            __midiSwitchDevice ??= (MidiSwitchDevice)InputSystem.AddDevice(desc);
+                var desc = new InputDeviceDescription
+                {
+                    interfaceName = "MidiSwitch",
+                    //deviceClass = "MIDI",
+                    //product = "loopMIDI Port",
+                    //capabilities = "switch"
+                };
+                __midiSwitchDevice = (MidiSwitchDevice)InputSystem.AddDevice(desc);
+            }
 
             return __midiSwitchDevice;
         }
@@ -126,18 +129,20 @@ namespace Minis
                 else if (status == 0xB && size == 3)
                 {
                     GetChannelDevice(channel).ProcessControlChange(message[0], message[1], message[2]);
+                    GetMidiSwitchDevice().ProcessControlChange(message[0], message[1], message[2]);
                 }
                 else if (status == 0xC && size == 2)
                 {
                     GetChannelDevice(channel).ProcessProgramChange(message[0], message[1]);
+                    GetMidiSwitchDevice().ProcessProgramChange(message[0], message[1]);
                 }
                 else if (status == 0xE && size == 3)
                 {
                     GetChannelDevice(channel).ProcessPitchBend(message[0], message[1], message[2]);
+                    GetMidiSwitchDevice().ProcessPitchBend(message[0], message[1], message[2]);
                 }
             }
         }
-
         #endregion
     }
 }

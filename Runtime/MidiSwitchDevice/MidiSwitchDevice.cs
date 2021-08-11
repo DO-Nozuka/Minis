@@ -1,6 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using Dono.MidiUtilities.Runtime;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.Layouts;
@@ -8,31 +6,38 @@ using UnityEngine.InputSystem.Layouts;
 namespace Minis.Runtime.MidiSwitchDevice
 {
     [InputControlLayout(stateType = typeof(MidiSwitchDeviceState), displayName = "MIDI Switch Device")]
-    public class MidiSwitchDevice : InputDevice
+    public partial class MidiSwitchDevice : InputDevice //TODO: It is better to share the same interface with MidiVector3Device.
     {
-        MidiSwitchDeviceState state = new MidiSwitchDeviceState();
-        KeyControl[] _notes;
-        public void ProcessNoteOn(byte stats, byte note, byte velocity)
-        {
-            _notes[note].QueueValueChange(1.0f);
-        }
+        private KeyControl[] _keyNotes;
+        private KeyControl _anyKeyNote;
+        private KeyControl _anyWhiteKeyNote;
+        private KeyControl _anyBlackKeyNote;
 
+        private KeyControl _keyPitchUp;
+        private KeyControl _keyPitchDown;
+        private KeyControl _keyModulation;
 
-        public void ProcessNoteOff(byte stats, byte note, byte velocity)
-        {
-            _notes[note].QueueValueChange(0.0f);
-        }
+        private byte modulationMSB; //CC 01H
+        private byte modulationLSB; //CC 21H
+        private short modulation => (short)((modulationMSB << 7) + modulationLSB);
 
+   
         protected override void FinishSetup()
         {
             base.FinishSetup();
 
             // Populate the input controls.
-            _notes = new KeyControl[128];
+            _keyNotes = new KeyControl[128];
             for(int i = 0; i < 128; i++)
             {
-                _notes[i] = GetChildControl<KeyControl>("KeyNote" + i.ToString("D3"));
+                _keyNotes[i] = GetChildControl<KeyControl>("KeyNote" + i.ToString("D3"));
             }
+            _anyKeyNote = GetChildControl<KeyControl>("AnyKeyNote");
+            _anyWhiteKeyNote = GetChildControl<KeyControl>("AnyWhiteKeyNote");
+            _anyBlackKeyNote = GetChildControl<KeyControl>("AnyBlackKeyNote");
+            _keyPitchUp = GetChildControl<KeyControl>("KeyPitchUp");
+            _keyPitchDown = GetChildControl<KeyControl>("KeyPitchDown");
+            _keyModulation = GetChildControl<KeyControl>("KeyModulation");
         }
 
 

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
@@ -7,9 +8,11 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace Minis.Runtime.MidiSwitchDevice
 {
+    [StructLayout(LayoutKind.Sequential)]
     public unsafe struct MidiSwitchDeviceState : IInputStateTypeInfo
     {
-        private const int kSizeInBits = 128;
+        public FourCC format => new FourCC('M', 'I', 'D', 'K'); //MIDi Key
+        private const int kSizeInBits = 133;
         internal const int kSizeInBytes = (kSizeInBits + 7) / 8;
 
         #region InputControls
@@ -141,9 +144,18 @@ namespace Minis.Runtime.MidiSwitchDevice
         [InputControl(name = "KeyNote125", layout = "Key", bit = 125)]
         [InputControl(name = "KeyNote126", layout = "Key", bit = 126)]
         [InputControl(name = "KeyNote127", layout = "Key", bit = 127)]
+        
+        [InputControl(name = "AnyKeyNote", layout = "Key", bit = 128)]
+        [InputControl(name = "AnyWhiteKeyNote", layout = "Key", bit = 129)]
+        [InputControl(name = "AnyBlackKeyNote", layout = "Key", bit = 130)]
+        [InputControl(name = "KeyPitchUp", layout = "Key", bit = 131)]
+        [InputControl(name = "KeyPitchDown", layout = "Key", bit = 132)]
+        [InputControl(name = "KeyModulation", layout = "Key", bit = 133)]
+        //[InputControl(name = "", layout = "Key", bit = )]
+        //[InputControl(name = "", layout = "Key", bit = )]
+        //[InputControl(name = "", layout = "Key", bit = )]
         #endregion
+        public fixed byte _keyNotes[kSizeInBytes];
 
-        public FourCC format => new FourCC('M', 'I', 'D', 'S'); //MIDi Switch
-        private fixed byte _keyNotes[kSizeInBytes];
     }
 }
