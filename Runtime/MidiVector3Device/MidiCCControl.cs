@@ -9,7 +9,7 @@ namespace Minis.Runtime.MidiVector3Device
         public MidiCCControl()
         {
             m_StateBlock.format =
-                UnityEngine.InputSystem.LowLevel.InputStateBlock.FormatByte;
+                UnityEngine.InputSystem.LowLevel.InputStateBlock.FormatVector3Byte;
         }
     }
 }

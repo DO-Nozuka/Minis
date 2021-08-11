@@ -8,7 +8,7 @@ namespace Minis.Runtime.MidiVector3Device
         public MidiNoteControl()
         {
             m_StateBlock.format =
-                UnityEngine.InputSystem.LowLevel.InputStateBlock.FormatByte;
+                UnityEngine.InputSystem.LowLevel.InputStateBlock.FormatVector3Byte;
         }
     }
 }
