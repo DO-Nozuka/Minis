@@ -155,6 +155,7 @@ namespace Minis.Runtime.MidiSwitchDevice
         //[InputControl(name = "", layout = "Key", bit = )]
         //[InputControl(name = "", layout = "Key", bit = )]
         #endregion
+
         public fixed byte _keyNotes[kSizeInBytes];
 
     }
