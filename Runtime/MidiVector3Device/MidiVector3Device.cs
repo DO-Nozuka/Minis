@@ -8,7 +8,7 @@ namespace Minis.Runtime.MidiVector3Device
     //
     // Custom input device class that processes input from a MIDI channel
     //
-    [InputControlLayout(stateType = typeof(MidiDeviceState), displayName = "MIDI Device")]
+    [InputControlLayout(stateType = typeof(MidiVector3DeviceState), displayName = "MIDI Device")]
     public sealed class MidiVector3Device : InputDevice
     {
         #region Public accessors
@@ -174,8 +174,8 @@ namespace Minis.Runtime.MidiVector3Device
 
             for (var i = 0; i < 128; i++)
             {
-                _notes[i] = GetChildControl<MidiNoteControl>("DonoNote" + i.ToString("D3"));
-                _controlChanges[i] = GetChildControl<MidiCCControl>("DonoControl" + i.ToString("D3"));
+                _notes[i] = GetChildControl<MidiNoteControl>("Vec3Note" + i.ToString("D3"));
+                _controlChanges[i] = GetChildControl<MidiCCControl>("Vec3Control" + i.ToString("D3"));
             }
 
             _pitchBend = GetChildControl<MidiPitchBendControl>("PitchBend");
