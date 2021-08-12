@@ -85,3 +85,4 @@ Update
 1.1.0: AddPitchBend
 1.1.1: AddProgramChange
 1.1.2: Vector2 => Vector3
+1.1.3: Add Button Type
