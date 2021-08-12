@@ -6,7 +6,7 @@ namespace Minis.Runtime.MidiSwitchDevice
 {
     public partial class MidiSwitchDevice : InputDevice //TODO: It is better to share the same interface with MidiVector3Device.
     {
-        MidiSwitchDeviceState _switchState;
+        static MidiSwitchDeviceState _switchState;
 
         #region MIDI event receiver (invoked from MidiPort)
         public unsafe void ProcessNoteOn(byte stats, byte note, byte velocity)

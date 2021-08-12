@@ -147,10 +147,6 @@ namespace Minis.Runtime.MidiSwitchDevice
 
         public void SetNoteOn(byte note)
         {
-            //buttons[note / 32bit]‚Ì‰º‚©‚çnote % 32bit”Ô–Ú‚ğ1‚É‚·‚é
-            //var i = note >> 5;
-            //var j = note & 0b00011111;
-            //var k = 0b0000000000000001 << (note & 0b00011111);
             buttons[note >> 5] |= 0x0001 << (note & 0b00011111);
         }
 
@@ -158,10 +154,30 @@ namespace Minis.Runtime.MidiSwitchDevice
         {
             buttons[note >> 5] &= ~(0x0001 << (note & 0b00011111));
         }
-    }
 
-    public unsafe struct HowManyByte
-    {
-        public fixed short i[128];
+        public void SetNote(byte note, bool on)
+        {
+            if (on)
+                SetNoteOn(note);
+            else
+                SetNoteOff(note);
+        }
+
+        public bool GetNote(byte note)
+        {
+            return (buttons[note >> 5] & (0x0001 << (note & 0b00011111))) != 0;
+        }
+
+        public bool this[byte note]
+        {
+            set
+            {
+                SetNote(note, value);
+            }
+            get
+            {
+                return GetNote(note);    
+            }
+        }
     }
 }
