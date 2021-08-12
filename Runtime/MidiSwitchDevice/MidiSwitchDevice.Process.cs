@@ -21,7 +21,6 @@ namespace Minis.Runtime.MidiSwitchDevice
             else
                 ProcessAnyBlackNoteOn(stats, note, velocity);
 
-
             InputSystem.QueueDeltaStateEvent(this, _switchState);
         }
 
