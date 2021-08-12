@@ -190,8 +190,8 @@ namespace Minis.Runtime.MidiVector3Device
             // MIDI channel number determination
             // Here is a dirty trick: Parse the last two characters in the product
             // name and use it as a channel number.
-            var product = description.product;
-            _channel = int.Parse(product.Substring(product.Length - 2));
+            //var product = description.product;
+            //_channel = int.Parse(product.Substring(product.Length - 2));
         }
 
         public static MidiVector3Device current { get; private set; }

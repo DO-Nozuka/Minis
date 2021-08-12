@@ -292,6 +292,5 @@ namespace Minis.Runtime.MidiVector3Device
         [InputControl(name = "AnyBlackNote",    displayName = "AnyBlackNote",   shortDisplayName = "AnyBNote",  layout = "MidiNote", offset = 0x2620)]
         public fixed byte anyNote[3];
         #endregion
-
     }
 }

@@ -16,24 +16,42 @@ namespace Minis
 
         RtMidiDll.Wrapper* _rtmidi;
         string _portName;
-        private MidiVector3Device [] _channels = new MidiVector3Device[16];
+        //private MidiVector3Device [] _channels = new MidiVector3Device[16];
+        private MidiVector3Device __midiVector3Device;
         private MidiSwitchDevice __midiSwitchDevice;
 
         // Get a device object bound with a specified channel.
         // Create a new device if it doesn't exist.
-        MidiVector3Device GetChannelDevice(int channel)
+        //MidiVector3Device GetChannelDevice(int channel)
+        //{
+        //    if (_channels[channel] == null)
+        //    {
+        //        var desc = new InputDeviceDescription {
+        //            interfaceName = "Minis",
+        //            deviceClass = "MIDI",
+        //            product = _portName + " Channel " + channel,
+        //            capabilities = "{\"channel\":" + channel + "}"
+        //        };
+        //        _channels[channel] = (MidiVector3Device)InputSystem.AddDevice(desc);
+        //    }
+        //    return _channels[channel];
+        //}
+
+        private MidiVector3Device GetMidiVector3Device()
         {
-            if (_channels[channel] == null)
+            if (__midiVector3Device == null)
             {
-                var desc = new InputDeviceDescription {
-                    interfaceName = "Minis",
-                    deviceClass = "MIDI",
-                    product = _portName + " Channel " + channel,
-                    capabilities = "{\"channel\":" + channel + "}"
+                var desc = new InputDeviceDescription
+                {
+                    interfaceName = "MidiVector3",
+                    //deviceClass = "MIDI",
+                    //product = "loopMIDI Port",
+                    //capabilities = "switch"
                 };
-                _channels[channel] = (MidiVector3Device)InputSystem.AddDevice(desc);
+                __midiVector3Device = (MidiVector3Device)InputSystem.AddDevice(desc);
             }
-            return _channels[channel];
+            
+            return __midiVector3Device;
         }
 
         private MidiSwitchDevice GetMidiSwitchDevice()
@@ -84,9 +102,11 @@ namespace Minis
             RtMidiDll.InFree(_rtmidi);
             _rtmidi = null;
 
-            foreach (var dev in _channels)
-                if (dev is object)
-                    InputSystem.RemoveDevice(dev);
+            //foreach (var dev in _channels)
+            //    if (dev is object)
+            //        InputSystem.RemoveDevice(dev);
+            if(__midiVector3Device is object)            
+                InputSystem.RemoveDevice(__midiVector3Device);            
             if (__midiSwitchDevice is object)
                 InputSystem.RemoveDevice(__midiSwitchDevice);
 
@@ -117,28 +137,33 @@ namespace Minis
 
                 if (noteOn && size == 3)
                 {
-                    GetChannelDevice(channel).ProcessNoteOn(message[0], message[1], message[2]);
+                    //GetChannelDevice(channel).ProcessNoteOn(message[0], message[1], message[2]);
+                    GetMidiVector3Device().ProcessNoteOn(message[0], message[1], message[2]);
                     GetMidiSwitchDevice().ProcessNoteOn(message[0], message[1], message[2]);
                 }
                 else if (noteOff && size == 3)
                 {
                     message[0] = (byte)(0x80 + channel);    //0x9n vel=0 => 0x8n vel=0ÅB
-                    GetChannelDevice(channel).ProcessNoteOff(message[0], message[1], message[2]);
+                    //GetChannelDevice(channel).ProcessNoteOff(message[0], message[1], message[2]);
+                    GetMidiVector3Device().ProcessNoteOff(message[0], message[1], message[2]);
                     GetMidiSwitchDevice().ProcessNoteOff(message[0], message[1], message[2]);
                 }
                 else if (status == 0xB && size == 3)
                 {
-                    GetChannelDevice(channel).ProcessControlChange(message[0], message[1], message[2]);
+                    //GetChannelDevice(channel).ProcessControlChange(message[0], message[1], message[2]);
+                    GetMidiVector3Device().ProcessControlChange(message[0], message[1], message[2]);
                     GetMidiSwitchDevice().ProcessControlChange(message[0], message[1], message[2]);
                 }
                 else if (status == 0xC && size == 2)
                 {
-                    GetChannelDevice(channel).ProcessProgramChange(message[0], message[1]);
+                    //GetChannelDevice(channel).ProcessProgramChange(message[0], message[1]);
+                    GetMidiVector3Device().ProcessProgramChange(message[0], message[1]);
                     GetMidiSwitchDevice().ProcessProgramChange(message[0], message[1]);
                 }
                 else if (status == 0xE && size == 3)
                 {
-                    GetChannelDevice(channel).ProcessPitchBend(message[0], message[1], message[2]);
+                    //GetChannelDevice(channel).ProcessPitchBend(message[0], message[1], message[2]);
+                    GetMidiVector3Device().ProcessPitchBend(message[0], message[1], message[2]);
                     GetMidiSwitchDevice().ProcessPitchBend(message[0], message[1], message[2]);
                 }
             }

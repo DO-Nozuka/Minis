@@ -34,6 +34,9 @@ namespace Minis
                 matches: new InputDeviceMatcher().WithInterface("Minis")
                 );
 
+            InputSystem.RegisterLayout<MidiVector3Device>(
+                matches: new InputDeviceMatcher().WithInterface("MidiVector3")
+                );
             InputSystem.RegisterLayout<MidiSwitchDevice>(
                 matches: new InputDeviceMatcher().WithInterface("MidiSwitch")
                 );
