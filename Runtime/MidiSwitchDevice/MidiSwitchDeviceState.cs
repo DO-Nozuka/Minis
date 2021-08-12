@@ -11,6 +11,7 @@ namespace Minis.Runtime.MidiSwitchDevice
     [StructLayout(LayoutKind.Explicit, Size = 20)]   //Size : in Byte Note:16, Pitch:4, AnyNote:4 
     public unsafe struct MidiSwitchDeviceState : IInputStateTypeInfo
     {
+        //__buttons[0]
         [InputControl(name = "BtnNote000", layout = "Button", bit = 0, displayName = "BtnNote000")]
         [InputControl(name = "BtnNote001", layout = "Button", bit = 1, displayName = "BtnNote001")]
         [InputControl(name = "BtnNote002", layout = "Button", bit = 2, displayName = "BtnNote002")]
@@ -43,6 +44,7 @@ namespace Minis.Runtime.MidiSwitchDevice
         [InputControl(name = "BtnNote029", layout = "Button", bit = 29, displayName = "BtnNote029")]
         [InputControl(name = "BtnNote030", layout = "Button", bit = 30, displayName = "BtnNote030")]
         [InputControl(name = "BtnNote031", layout = "Button", bit = 31, displayName = "BtnNote031")]
+        //__buttons[1]
         [InputControl(name = "BtnNote032", layout = "Button", bit = 32, displayName = "BtnNote032")]
         [InputControl(name = "BtnNote033", layout = "Button", bit = 33, displayName = "BtnNote033")]
         [InputControl(name = "BtnNote034", layout = "Button", bit = 34, displayName = "BtnNote034")]
@@ -75,6 +77,7 @@ namespace Minis.Runtime.MidiSwitchDevice
         [InputControl(name = "BtnNote061", layout = "Button", bit = 61, displayName = "BtnNote061")]
         [InputControl(name = "BtnNote062", layout = "Button", bit = 62, displayName = "BtnNote062")]
         [InputControl(name = "BtnNote063", layout = "Button", bit = 63, displayName = "BtnNote063")]
+        //__buttons[2]
         [InputControl(name = "BtnNote064", layout = "Button", bit = 64, displayName = "BtnNote064")]
         [InputControl(name = "BtnNote065", layout = "Button", bit = 65, displayName = "BtnNote065")]
         [InputControl(name = "BtnNote066", layout = "Button", bit = 66, displayName = "BtnNote066")]
@@ -107,6 +110,7 @@ namespace Minis.Runtime.MidiSwitchDevice
         [InputControl(name = "BtnNote093", layout = "Button", bit = 93, displayName = "BtnNote093")]
         [InputControl(name = "BtnNote094", layout = "Button", bit = 94, displayName = "BtnNote094")]
         [InputControl(name = "BtnNote095", layout = "Button", bit = 95, displayName = "BtnNote095")]
+        //__buttons[3]
         [InputControl(name = "BtnNote096", layout = "Button", bit = 96, displayName = "BtnNote096")]
         [InputControl(name = "BtnNote097", layout = "Button", bit = 97, displayName = "BtnNote097")]
         [InputControl(name = "BtnNote098", layout = "Button", bit = 98, displayName = "BtnNote098")]
@@ -139,16 +143,39 @@ namespace Minis.Runtime.MidiSwitchDevice
         [InputControl(name = "BtnNote125", layout = "Button", bit = 125, displayName = "BtnNote125")]
         [InputControl(name = "BtnNote126", layout = "Button", bit = 126, displayName = "BtnNote126")]
         [InputControl(name = "BtnNote127", layout = "Button", bit = 127, displayName = "BtnNote127")]
-
+        //__buttons[4]
         [InputControl(name = "BtnPitchUp",      layout = "Button", bit = 0 + 128, displayName = "BtnPitchUp")]
-        [InputControl(name = "BtnPitchDown",    layout = "Button", bit = 1 + 128, displayName = "BtnPitchDown")]
-
+        [InputControl(name = "BtnPitchDown", layout = "Button", bit = 1 + 128, displayName = "BtnPitchDown")]
+        //[InputControl(name = "", layout = "Button", bit = 2 + 128, displayName = "")]
+        //[InputControl(name = "", layout = "Button", bit = 3 + 128, displayName = "")]
         [InputControl(name = "AnyBtnNote",      layout = "Button", bit = 4 + 128, displayName = "AnyBtnNote")]
         [InputControl(name = "AnyWhiteBtnNote", layout = "Button", bit = 5 + 128, displayName = "AnyWhiteBtnNote")]
         [InputControl(name = "AnyBlackBtnNote", layout = "Button", bit = 6 + 128, displayName = "AnyBlackBtnNote")]
- 
+        //[InputControl(name = "", layout = "Button", bit = 7 + 128, displayName = "")]
+        //[InputControl(name = "", layout = "Button", bit = 8 + 128, displayName = "")]
+        //[InputControl(name = "", layout = "Button", bit = 9 + 128, displayName = "")]
+        //[InputControl(name = "", layout = "Button", bit = 10 + 128, displayName = "")]
+        //[InputControl(name = "", layout = "Button", bit = 11 + 128, displayName = "")]
+        //[InputControl(name = "", layout = "Button", bit = 12 + 128, displayName = "")]
+        //[InputControl(name = "", layout = "Button", bit = 13 + 128, displayName = "")]
+        //[InputControl(name = "", layout = "Button", bit = 14 + 128, displayName = "")]
+        //[InputControl(name = "", layout = "Button", bit = 15 + 128, displayName = "")]
+        //[InputControl(name = "", layout = "Button", bit = 16 + 128, displayName = "")]
+        //[InputControl(name = "", layout = "Button", bit = 17 + 128, displayName = "")]
+        //[InputControl(name = "", layout = "Button", bit = 18 + 128, displayName = "")]
+        //[InputControl(name = "", layout = "Button", bit = 19 + 128, displayName = "")]
+        //[InputControl(name = "", layout = "Button", bit = 20 + 128, displayName = "")]
+        //[InputControl(name = "", layout = "Button", bit = 21 + 128, displayName = "")]
+        //[InputControl(name = "", layout = "Button", bit = 22 + 128, displayName = "")]
+        //[InputControl(name = "", layout = "Button", bit = 23 + 128, displayName = "")]
+        //[InputControl(name = "", layout = "Button", bit = 24 + 128, displayName = "")]
+        //[InputControl(name = "", layout = "Button", bit = 25 + 128, displayName = "")]
+        //[InputControl(name = "", layout = "Button", bit = 26 + 128, displayName = "")]
+        //[InputControl(name = "", layout = "Button", bit = 27 + 128, displayName = "")]
+        //[InputControl(name = "", layout = "Button", bit = 28 + 128, displayName = "")]
+        //[InputControl(name = "", layout = "Button", bit = 29 + 128, displayName = "")]
+        //[InputControl(name = "", layout = "Button", bit = 30 + 128, displayName = "")]
         [InputControl(name = "None", layout = "Button", bit = 31 +128, displayName = "None")]
-
         [FieldOffset(0)]
         public fixed uint __buttons[5];
 
@@ -167,60 +194,88 @@ namespace Minis.Runtime.MidiSwitchDevice
             }
         }
 
-        public bool GetNote(byte note)
-        {
-            return (__buttons[note >> 5] & (0x0001 << (note & 0b00011111))) != 0;
+        public bool GetNote(byte note) { return GetBit((byte)(note >> 5), (uint)0x0001 << (note & 0b00011111)); }
+        public void SetNoteOn(byte note) {
+            SetBit1((byte)(note >> 5), (uint)0x0001 << (note & 0b00011111));
+            UpdateAnyNote();
         }
-        public void SetNoteOn(byte note)
-        {
-            __buttons[note >> 5] |= (uint)0x0001 << (note & 0b00011111);
-        }
-        public void SetNoteOff(byte note)
-        {
-            __buttons[note >> 5] &= ~((uint)0x0001 << (note & 0b00011111));
+        public void SetNoteOff(byte note) {
+            SetBit0((byte)(note >> 5), (uint)0x0001 << (note & 0b00011111));
+            UpdateAnyNote();
         }
         public void SetNote(byte note, bool on) { if (on) SetNoteOn(note); else SetNoteOff(note); }
 
         //Pitch
-        public byte _pitchUpIndex => 4;
-        public byte _pitchDownIndex => 4;
-        public uint _pitchUpBit     =>  0b00000000000000000000000000000001;
-        public uint _pitchDownBit   =>  0b00000000000000000000000000000010;
-        public bool GetPitchUp() { return (__buttons[_pitchUpIndex] & _pitchUpBit) != 0; }
-        public bool GetPitchDown() { return (__buttons[_pitchDownIndex] & _pitchDownBit) != 0; }
+        private byte _pitchUpIndex => 4;
+        private byte _pitchDownIndex => 4;
+        private uint _pitchUpBit     =>  0b0000_0000_0000_0000_0000_0000_0000_0001;
+        private uint _pitchDownBit   =>  0b0000_0000_0000_0000_0000_0000_0000_0010;
+        public bool GetPitchUp() { return GetBit(_pitchUpIndex, _pitchUpBit); }
+        public bool GetPitchDown() { return GetBit(_pitchDownIndex, _pitchDownBit); }
         public bool GetPitch(bool up) { return up ? GetPitchUp() : GetPitchDown(); }
-        public void SetPitchOn(bool up)
-        {
-            var index = up ? _pitchUpIndex : _pitchDownIndex;
-            var bit = up ? _pitchUpBit : _pitchDownBit;
-
-            __buttons[index] |= bit;
-        }
-        public void SetPitchOff(bool up)
-        {
-            var index = up ? _pitchUpIndex : _pitchDownIndex;
-            var bit = up ? _pitchUpBit : _pitchDownBit;
-
-            __buttons[index] &= ~bit;
-        }
+        public void SetPitchOn(bool up) { SetBit1(up ? _pitchUpIndex : _pitchDownIndex, up ? _pitchUpBit : _pitchDownBit); }
+        public void SetPitchOff(bool up) { SetBit0(up ? _pitchUpIndex : _pitchDownIndex, up ? _pitchUpBit : _pitchDownBit); }
         public void SetPitch(bool up, bool on) { if (on) SetPitchOn(up); else SetPitchOff(up); }
         
-        ////AnyWhiteNote
-        //public bool GetAnyWhiteNote() { }
-        //public void SetAnyWhiteNoteOn()       {        }
-        //public void SetAnyWhiteNoteOff()        {        }
-        //public void SetAnyWhiteNote(bool on) { }
+        //Anynote(Change from SetNote)
+        private byte _anyNoteIndex => 4;
+        private uint _anyNoteBit => 0b0000_0000_0000_0000_0000_0000_0001_0000;  //(1 << 4)
+        private uint _anyWhiteNoteMask0 => 0b1011_0101_1010_1011_0101_1010_1011_0101;
+        private uint _anyWhiteNoteMask1 => 0b0101_1010_1011_0101_1010_1011_0101_1010;
+        private uint _anyWhiteNoteMask2 => 0b1010_1011_0101_1010_1011_0101_1010_1011;
+        private uint _anyWhiteNoteMask3 => 0b1011_0101_1010_1011_0101_1010_1011_0101;
+        public bool GetAnyNote() { return GetBit(_anyNoteIndex, _anyNoteBit); }
+        private void SetAnyNoteOn() { SetBit1(_anyNoteIndex, _anyNoteBit); }
+        private void SetAnyNoteOff() { SetBit0(_anyNoteIndex, _anyNoteBit); }
+        private void SetAnyNote(bool on) { if (on) SetAnyNoteOn(); else SetAnyNoteOff(); }
+        private void UpdateAnyNote()
+        {
+            if (__buttons[0] != 0 
+                || __buttons[1] !=0
+                || __buttons[2] !=0
+                || __buttons[3] !=0)
+                SetAnyNoteOn();
+            else
+                SetAnyNoteOff();
 
-        ////AnyBlackNote
-        //public bool GetAnyBlackNote() { }
-        //public void SetAnyBlackNoteOn()        {        }
-        //public void SetAnyBlackNoteOff()        { }
-        //public void SetAnyBlackNote(bool on) { }
+            if ((__buttons[0] & _anyWhiteNoteMask0) != 0
+                || (__buttons[1] & _anyWhiteNoteMask1) != 0
+                || (__buttons[2] & _anyWhiteNoteMask2) != 0
+                || (__buttons[3] & _anyWhiteNoteMask3) != 0
+                )
+                SetAnyWhiteNoteOn();
+            else
+                SetAnyWhiteNoteOff();
 
-        ////Anynote
-        //public bool GetAnyNote() { }
-        //public void SetAnyNoteOn() { }
-        //public void SetAnyNoteOff() { }
-        //public void SetAnyNote(bool on) { }
+            if ((__buttons[0] & ~_anyWhiteNoteMask0) != 0
+                || (__buttons[1] & ~_anyWhiteNoteMask1) != 0
+                || (__buttons[2] & ~_anyWhiteNoteMask2) != 0
+                || (__buttons[3] & ~_anyWhiteNoteMask3) != 0
+                )
+                SetAnyBlackNoteOn();
+            else
+                SetAnyBlackNoteOff();
+        }
+
+        //AnyWhiteNote(Change from SetNote)
+        private byte _anyWhiteNoteIndex => 4;
+        private uint _anyWhiteNoteBit => 0b0000_0000_0000_0000_0000_0000_0010_0000;//(1 << 5)
+        public bool GetAnyWhiteNote() { return GetBit(_anyWhiteNoteIndex, _anyWhiteNoteBit); }
+        public void SetAnyWhiteNoteOn() { SetBit1(_anyWhiteNoteIndex, _anyWhiteNoteBit); }
+        public void SetAnyWhiteNoteOff() { SetBit0(_anyWhiteNoteIndex, _anyWhiteNoteBit); }
+        public void SetAnyWhiteNote(bool on) { if (on) SetAnyWhiteNoteOn(); else SetAnyWhiteNoteOff(); }
+
+        //AnyBlackNote(Change from SetNote)
+        private byte _anyBlackNoteIndex => 4;
+        private uint _anyBlackNoteBit => 0b0000_0000_0000_0000_0000_0000_0100_0000;//(1 << 6)
+        public bool GetAnyBlackNote() { return GetBit(_anyBlackNoteIndex, _anyBlackNoteBit); }
+        public void SetAnyBlackNoteOn() { SetBit1(_anyBlackNoteIndex, _anyBlackNoteBit); }
+        public void SetAnyBlackNoteOff() { SetBit0(_anyBlackNoteIndex, _anyBlackNoteBit); }
+        public void SetAnyBlackNote(bool on) { if (on) SetAnyBlackNoteOn(); else SetAnyBlackNoteOff(); }
+
+        //Common Methods
+        private bool GetBit(byte index, uint bit) { return (__buttons[index] & bit) != 0; }
+        private void SetBit1(byte index, uint bit) { __buttons[index] |= bit; }
+        private void SetBit0(byte index, uint bit) { __buttons[index] &= ~bit; }
     }
 }
