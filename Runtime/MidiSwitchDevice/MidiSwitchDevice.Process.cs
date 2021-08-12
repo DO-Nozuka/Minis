@@ -9,10 +9,10 @@ namespace Minis.Runtime.MidiSwitchDevice
         static MidiSwitchDeviceState _switchState;
 
         #region MIDI event receiver (invoked from MidiPort)
+        //---- Main Process(use QueueEvent) ----
         public unsafe void ProcessNoteOn(byte stats, byte note, byte velocity)
         {
             _switchState.SetNoteOn(note);
-            InputSystem.QueueDeltaStateEvent(this, _switchState);
 
             // Send to additional controls
             ProcessAnyNoteOn(stats, note, velocity);
@@ -20,13 +20,15 @@ namespace Minis.Runtime.MidiSwitchDevice
                 ProcessAnyWhiteNoteOn(stats, note, velocity);
             else
                 ProcessAnyBlackNoteOn(stats, note, velocity);
+
+
+            InputSystem.QueueDeltaStateEvent(this, _switchState);
         }
 
 
         public void ProcessNoteOff(byte stats, byte note, byte velocity)
         {
             _switchState.SetNoteOff(note);
-            InputSystem.QueueDeltaStateEvent(this, _switchState);
 
             // Send to additional controls
             ProcessAnyNoteOff(stats, note, velocity);
@@ -34,6 +36,8 @@ namespace Minis.Runtime.MidiSwitchDevice
                 ProcessAnyWhiteNoteOff(stats, note, velocity);
             else
                 ProcessAnyBlackNoteOff(stats, note, velocity);
+
+            InputSystem.QueueDeltaStateEvent(this, _switchState);
         }
 
         public void ProcessControlChange(byte stats, byte number, byte value)
@@ -51,6 +55,7 @@ namespace Minis.Runtime.MidiSwitchDevice
             //    default:
             //        break;
             //}
+            InputSystem.QueueDeltaStateEvent(this, _switchState);
         }
 
         private bool IsLastPitchUp = false;
@@ -62,26 +67,38 @@ namespace Minis.Runtime.MidiSwitchDevice
 
             if (value < 0)
             {
+                //Down
+                ProcessPitchDown(stats, value1, value2);
                 IsLastPitchDown = true;
                 IsLastPitchUp = false;
             }
             else if (value > 0)
             {
+                //Up
+                ProcessPitchUp(stats, value1, value2);
                 IsLastPitchDown = false;
                 IsLastPitchUp = true;
             }
             else
             {
+                //Center
                 if (IsLastPitchDown)
                     ProcessPitchDown(stats, value1, value2);
                 else if (IsLastPitchUp)
                     ProcessPitchUp(stats, value1, value2);
             }
+
+
+            InputSystem.QueueDeltaStateEvent(this, _switchState);
         }
 
-        public void ProcessProgramChange(byte stats, byte value) { }
+        public void ProcessProgramChange(byte stats, byte value)
+        {
 
-        //----
+            InputSystem.QueueDeltaStateEvent(this, _switchState);
+        }
+
+        //---- Sub Process(not use QueueEvent) ----
         private void ProcessAnyNoteOn(byte stats, byte note, byte velocity)
         {
             //_anyKeyNote.QueueValueChange(1.0f);
@@ -111,14 +128,14 @@ namespace Minis.Runtime.MidiSwitchDevice
 
         private void ProcessPitchUp(byte stats, byte value1, byte value2)
         {
-            //var value = MidiMessage.GetPitchBendValue(value1, value2);
-            //_keyPitchUp.QueueValueChange(value > 0 ? 1.0f : 0.0f);
+            var value = MidiMessage.GetPitchBendValue(value1, value2);
+            _switchState.SetPitch(true, value > 0);
         }
 
         private void ProcessPitchDown(byte stats, byte value1, byte value2)
         {
-            //var value = MidiMessage.GetPitchBendValue(value1, value2);
-            //_keyPitchDown.QueueValueChange(value < 0 ? 1.0f : 0.0f);
+            var value = MidiMessage.GetPitchBendValue(value1, value2);
+            _switchState.SetPitch(false, value < 0);
         }
 
         private void ProcessModulation(short modulationValue)
