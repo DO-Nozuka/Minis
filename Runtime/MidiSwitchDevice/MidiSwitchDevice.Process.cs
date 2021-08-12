@@ -1,18 +1,18 @@
 using Dono.MidiUtilities.Runtime;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Layouts;
+using UnityEngine.InputSystem.LowLevel;
 
 namespace Minis.Runtime.MidiSwitchDevice
 {
     public partial class MidiSwitchDevice : InputDevice //TODO: It is better to share the same interface with MidiVector3Device.
     {
+        MidiSwitchDeviceState _switchState;
+
         #region MIDI event receiver (invoked from MidiPort)
-        public void ProcessNoteOn(byte stats, byte note, byte velocity)
+        public unsafe void ProcessNoteOn(byte stats, byte note, byte velocity)
         {
-            _keyNotes[note].QueueValueChange(1.0f);
+            _switchState.SetNoteOn(note);
+            InputSystem.QueueDeltaStateEvent(this, _switchState);
 
             // Send to additional controls
             ProcessAnyNoteOn(stats, note, velocity);
@@ -25,7 +25,8 @@ namespace Minis.Runtime.MidiSwitchDevice
 
         public void ProcessNoteOff(byte stats, byte note, byte velocity)
         {
-            _keyNotes[note].QueueValueChange(0.0f);
+            _switchState.SetNoteOff(note);
+            InputSystem.QueueDeltaStateEvent(this, _switchState);
 
             // Send to additional controls
             ProcessAnyNoteOff(stats, note, velocity);
@@ -129,7 +130,5 @@ namespace Minis.Runtime.MidiSwitchDevice
         }
 
         #endregion
-
-
     }
 }
