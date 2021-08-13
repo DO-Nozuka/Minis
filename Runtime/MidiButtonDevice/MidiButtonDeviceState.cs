@@ -6,10 +6,10 @@ using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
 
-namespace Minis.Runtime.MidiSwitchDevice
+namespace Minis.Runtime.MidiButtonDevice
 {
     [StructLayout(LayoutKind.Explicit, Size = 20)]   //Size : in Byte Note:16, Pitch:4, AnyNote:4 
-    public unsafe struct MidiSwitchDeviceState : IInputStateTypeInfo
+    public unsafe struct MidiButtonDeviceState : IInputStateTypeInfo
     {
         //__buttons[0]
         [InputControl(name = "BtnNote000", layout = "Button", bit = 0, displayName = "BtnNote000")]

@@ -2,11 +2,11 @@ using Dono.MidiUtilities.Runtime;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
 
-namespace Minis.Runtime.MidiSwitchDevice
+namespace Minis.Runtime.MidiButtonDevice
 {
-    public partial class MidiSwitchDevice : InputDevice //TODO: It is better to share the same interface with MidiVector3Device.
+    public partial class MidiButtonDevice : InputDevice //TODO: It is better to share the same interface with MidiVector3Device.
     {
-        static MidiSwitchDeviceState _switchState;
+        static MidiButtonDeviceState _switchState;
 
         #region MIDI event receiver (invoked from MidiPort)
         //---- Main Process(use QueueEvent) ----
@@ -41,19 +41,6 @@ namespace Minis.Runtime.MidiSwitchDevice
 
         public void ProcessControlChange(byte stats, byte number, byte value)
         {
-            //switch (number)
-            //{
-            //    case 0x01:  //Modulation MSB
-            //        modulationMSB = value;
-            //        ProcessModulation(modulation);
-            //        break;
-            //    case 0x21:  //Modulation LSB
-            //        modulationLSB = value;
-            //        ProcessModulation(modulation);
-            //        break;
-            //    default:
-            //        break;
-            //}
             InputSystem.QueueDeltaStateEvent(this, _switchState);
         }
 
