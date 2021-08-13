@@ -1,12 +1,12 @@
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
 
-namespace Minis.Runtime.MidiAxisDevice
+namespace Minis.Runtime.MidiAxisNoteDevice
 {
-    [InputControlLayout(stateType = typeof(MidiAxisDeviceState), displayName = "MIDI Axis Device")]
-    public partial class MidiAxisDevice : InputDevice
+    [InputControlLayout(stateType = typeof(MidiAxisNoteDeviceState), displayName = "MIDI Axis Note Device")]
+    public partial class MidiAxisNoteDevice : InputDevice
     {
-        public static MidiAxisDevice current { get; private set; }
+        public static MidiAxisNoteDevice current { get; private set; }
 
         protected override void FinishSetup()
         {

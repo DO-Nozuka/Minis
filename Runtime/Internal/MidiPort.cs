@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 using RtMidiDll = RtMidi.Unmanaged;
 using Minis.Runtime.MidiButtonDevice;
 using Minis.Runtime.MidiVector3Device;
-using Minis.Runtime.MidiAxisDevice;
+using Minis.Runtime.MidiAxisNoteDevice;
 
 namespace Minis
 {
@@ -20,7 +20,7 @@ namespace Minis
         //private MidiVector3Device [] _channels = new MidiVector3Device[16];
         private MidiVector3Device __midiVector3Device;
         private MidiButtonDevice __midiSwitchDevice;
-        private MidiAxisDevice __midiAxisDevice;
+        private MidiAxisNoteDevice __midiAxisNoteDevice;
 
         // Get a device object bound with a specified channel.
         // Create a new device if it doesn't exist.
@@ -73,18 +73,18 @@ namespace Minis
             return __midiSwitchDevice;
         }
 
-        private MidiAxisDevice GetMidiAxisDevice()
+        private MidiAxisNoteDevice GetMidiAxisDevice()
         {
-            if(__midiAxisDevice is null)
+            if(__midiAxisNoteDevice is null)
             {
                 var desc = new InputDeviceDescription
                 {
-                    interfaceName = "MidiAxis"
+                    interfaceName = "MidiAxisNote"
                 };
-                __midiAxisDevice = (MidiAxisDevice)InputSystem.AddDevice(desc);
+                __midiAxisNoteDevice = (MidiAxisNoteDevice)InputSystem.AddDevice(desc);
             }
 
-            return __midiAxisDevice;
+            return __midiAxisNoteDevice;
         }
 
         #endregion
@@ -125,8 +125,8 @@ namespace Minis
                 InputSystem.RemoveDevice(__midiVector3Device);            
             if (__midiSwitchDevice is object)
                 InputSystem.RemoveDevice(__midiSwitchDevice);
-            if (__midiAxisDevice is object)
-                InputSystem.RemoveDevice(__midiAxisDevice);
+            if (__midiAxisNoteDevice is object)
+                InputSystem.RemoveDevice(__midiAxisNoteDevice);
 
             System.GC.SuppressFinalize(this);
         }

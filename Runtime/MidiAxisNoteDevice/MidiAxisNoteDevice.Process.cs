@@ -1,12 +1,11 @@
 using Dono.MidiUtilities.Runtime;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.LowLevel;
 
-namespace Minis.Runtime.MidiAxisDevice
+namespace Minis.Runtime.MidiAxisNoteDevice
 {
-    public partial class MidiAxisDevice : InputDevice //TODO: It is better to share the same interface with MidiVector3Device.
+    public partial class MidiAxisNoteDevice : InputDevice //TODO: It is better to share the same interface with MidiVector3Device.
     {
-        static MidiAxisDeviceState _state;
+        static MidiAxisNoteDeviceState _state;
 
         public void ProcessNoteOn(byte stats, byte note, byte velocity)
         {

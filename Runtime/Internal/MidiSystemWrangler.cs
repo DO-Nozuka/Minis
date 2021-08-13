@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine.InputSystem.Controls;
 using Minis.Runtime.MidiButtonDevice;
 using Minis.Runtime.MidiVector3Device;
-using Minis.Runtime.MidiAxisDevice;
+using Minis.Runtime.MidiAxisNoteDevice;
 
 namespace Minis
 {
@@ -29,8 +29,8 @@ namespace Minis
             InputSystem.RegisterLayout<MidiButtonDevice>(
                 matches: new InputDeviceMatcher().WithInterface("MidiButton")
                 );
-            InputSystem.RegisterLayout<MidiAxisDevice>(
-                matches: new InputDeviceMatcher().WithInterface("MidiAxis")
+            InputSystem.RegisterLayout<MidiAxisNoteDevice>(
+                matches: new InputDeviceMatcher().WithInterface("MidiAxisNote")
                 );
         }
 

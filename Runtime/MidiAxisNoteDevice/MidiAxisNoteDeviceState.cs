@@ -6,10 +6,10 @@ using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
 
-namespace Minis.Runtime.MidiAxisDevice
+namespace Minis.Runtime.MidiAxisNoteDevice
 {
     [StructLayout(LayoutKind.Auto)]//, Size = 20)]   //Size : in Byte Note:16, Pitch:4, AnyNote:4 
-    public unsafe struct MidiAxisDeviceState : IInputStateTypeInfo
+    public unsafe struct MidiAxisNoteDeviceState : IInputStateTypeInfo
     {
         public FourCC format => new FourCC('M', 'I', 'D', 'A'); //MIDi Axis
 
