@@ -1,7 +1,7 @@
 {
   "author": "Daiki Onozuka",
   "dependencies": {
-    "com.donozuka.midiutilities": "0.9.4",
+    "com.donozuka.midiutilities": "0.9.5",
     "com.donozuka.rtmidiforunity": "1.0.3",
     "com.unity.inputsystem": "1.0.1"
   },
