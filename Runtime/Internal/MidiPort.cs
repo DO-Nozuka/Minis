@@ -1,8 +1,9 @@
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem;
 using RtMidiDll = RtMidi.Unmanaged;
-using Minis.Runtime.MidiSwitchDevice;
+using Minis.Runtime.MidiButtonDevice;
 using Minis.Runtime.MidiVector3Device;
+using Minis.Runtime.MidiAxisDevice;
 
 namespace Minis
 {
@@ -18,7 +19,8 @@ namespace Minis
         string _portName;
         //private MidiVector3Device [] _channels = new MidiVector3Device[16];
         private MidiVector3Device __midiVector3Device;
-        private MidiSwitchDevice __midiSwitchDevice;
+        private MidiButtonDevice __midiSwitchDevice;
+        private MidiAxisDevice __midiAxisDevice;
 
         // Get a device object bound with a specified channel.
         // Create a new device if it doesn't exist.
@@ -54,21 +56,35 @@ namespace Minis
             return __midiVector3Device;
         }
 
-        private MidiSwitchDevice GetMidiSwitchDevice()
+        private MidiButtonDevice GetMidiSwitchDevice()
         {
             if (__midiSwitchDevice == null)
             {
                 var desc = new InputDeviceDescription
                 {
-                    interfaceName = "MidiSwitch",
+                    interfaceName = "MidiButton",
                     //deviceClass = "MIDI",
                     //product = "loopMIDI Port",
                     //capabilities = "switch"
                 };
-                __midiSwitchDevice = (MidiSwitchDevice)InputSystem.AddDevice(desc);
+                __midiSwitchDevice = (MidiButtonDevice)InputSystem.AddDevice(desc);
             }
 
             return __midiSwitchDevice;
+        }
+
+        private MidiAxisDevice GetMidiAxisDevice()
+        {
+            if(__midiAxisDevice is null)
+            {
+                var desc = new InputDeviceDescription
+                {
+                    interfaceName = "MidiAxis"
+                };
+                __midiAxisDevice = (MidiAxisDevice)InputSystem.AddDevice(desc);
+            }
+
+            return __midiAxisDevice;
         }
 
         #endregion
@@ -109,6 +125,8 @@ namespace Minis
                 InputSystem.RemoveDevice(__midiVector3Device);            
             if (__midiSwitchDevice is object)
                 InputSystem.RemoveDevice(__midiSwitchDevice);
+            if (__midiAxisDevice is object)
+                InputSystem.RemoveDevice(__midiAxisDevice);
 
             System.GC.SuppressFinalize(this);
         }
@@ -140,6 +158,7 @@ namespace Minis
                     //GetChannelDevice(channel).ProcessNoteOn(message[0], message[1], message[2]);
                     GetMidiVector3Device().ProcessNoteOn(message[0], message[1], message[2]);
                     GetMidiSwitchDevice().ProcessNoteOn(message[0], message[1], message[2]);
+                    GetMidiAxisDevice().ProcessNoteOn(message[0], message[1], message[2]);
                 }
                 else if (noteOff && size == 3)
                 {
@@ -147,24 +166,28 @@ namespace Minis
                     //GetChannelDevice(channel).ProcessNoteOff(message[0], message[1], message[2]);
                     GetMidiVector3Device().ProcessNoteOff(message[0], message[1], message[2]);
                     GetMidiSwitchDevice().ProcessNoteOff(message[0], message[1], message[2]);
+                    GetMidiAxisDevice().ProcessNoteOff(message[0], message[1], message[2]);
                 }
                 else if (status == 0xB && size == 3)
                 {
                     //GetChannelDevice(channel).ProcessControlChange(message[0], message[1], message[2]);
                     GetMidiVector3Device().ProcessControlChange(message[0], message[1], message[2]);
                     GetMidiSwitchDevice().ProcessControlChange(message[0], message[1], message[2]);
+                    GetMidiAxisDevice().ProcessControlChange(message[0], message[1], message[2]);
                 }
                 else if (status == 0xC && size == 2)
                 {
                     //GetChannelDevice(channel).ProcessProgramChange(message[0], message[1]);
                     GetMidiVector3Device().ProcessProgramChange(message[0], message[1]);
                     GetMidiSwitchDevice().ProcessProgramChange(message[0], message[1]);
+                    GetMidiAxisDevice().ProcessProgramChange(message[0], message[1]);
                 }
                 else if (status == 0xE && size == 3)
                 {
                     //GetChannelDevice(channel).ProcessPitchBend(message[0], message[1], message[2]);
                     GetMidiVector3Device().ProcessPitchBend(message[0], message[1], message[2]);
                     GetMidiSwitchDevice().ProcessPitchBend(message[0], message[1], message[2]);
+                    GetMidiAxisDevice().ProcessPitchBend(message[0], message[1], message[2]);
                 }
             }
         }
