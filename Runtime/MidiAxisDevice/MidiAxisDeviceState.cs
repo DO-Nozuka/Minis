@@ -13,6 +13,7 @@ namespace Minis.Runtime.MidiAxisDevice
     {
         public FourCC format => new FourCC('M', 'I', 'D', 'A'); //MIDi Axis
 
+        #region InputControls
         [InputControl(name = "AxisNote000", layout = "Axis", offset = InputStateBlock.AutomaticOffset)]
         [InputControl(name = "AxisNote001", layout = "Axis", offset = InputStateBlock.AutomaticOffset)]
         [InputControl(name = "AxisNote002", layout = "Axis", offset = InputStateBlock.AutomaticOffset)]
@@ -141,9 +142,9 @@ namespace Minis.Runtime.MidiAxisDevice
         [InputControl(name = "AxisNote125", layout = "Axis", offset = InputStateBlock.AutomaticOffset)]
         [InputControl(name = "AxisNote126", layout = "Axis", offset = InputStateBlock.AutomaticOffset)]
         [InputControl(name = "AxisNote127", layout = "Axis", offset = InputStateBlock.AutomaticOffset)]
+        #endregion
         public fixed float __axisNote[128];
 
-        //Note
         public float this[byte note]
         {
             set
@@ -157,80 +158,11 @@ namespace Minis.Runtime.MidiAxisDevice
         }
 
         public float GetNote(byte note) { return __axisNote[note]; }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="note">Note Number</param>
+        /// <param name="value">Velocity(NoteOff: -1.0f to 0.0f, NoteOn 0.0f to 1.0f)</param>
         public void SetNote(byte note, float value) { __axisNote[note] = value; }
-
-        ////Pitch
-        //private byte _pitchUpIndex => 4;
-        //private byte _pitchDownIndex => 4;
-        //private uint _pitchUpBit => 0b0000_0000_0000_0000_0000_0000_0000_0001;
-        //private uint _pitchDownBit => 0b0000_0000_0000_0000_0000_0000_0000_0010;
-        //public bool GetPitchUp() { return GetBit(_pitchUpIndex, _pitchUpBit); }
-        //public bool GetPitchDown() { return GetBit(_pitchDownIndex, _pitchDownBit); }
-        //public bool GetPitch(bool up) { return up ? GetPitchUp() : GetPitchDown(); }
-        //public void SetPitchOn(bool up) { SetBit1(up ? _pitchUpIndex : _pitchDownIndex, up ? _pitchUpBit : _pitchDownBit); }
-        //public void SetPitchOff(bool up) { SetBit0(up ? _pitchUpIndex : _pitchDownIndex, up ? _pitchUpBit : _pitchDownBit); }
-        //public void SetPitch(bool up, bool on) { if (on) SetPitchOn(up); else SetPitchOff(up); }
-
-        ////Anynote(Change from SetNote)
-        //private byte _anyNoteIndex => 4;
-        //private uint _anyNoteBit => 0b0000_0000_0000_0000_0000_0000_0001_0000;  //(1 << 4)
-        //private uint _anyWhiteNoteMask0 => 0b1011_0101_1010_1011_0101_1010_1011_0101;
-        //private uint _anyWhiteNoteMask1 => 0b0101_1010_1011_0101_1010_1011_0101_1010;
-        //private uint _anyWhiteNoteMask2 => 0b1010_1011_0101_1010_1011_0101_1010_1011;
-        //private uint _anyWhiteNoteMask3 => 0b1011_0101_1010_1011_0101_1010_1011_0101;
-        //public bool GetAnyNote() { return GetBit(_anyNoteIndex, _anyNoteBit); }
-        //private void SetAnyNoteOn() { SetBit1(_anyNoteIndex, _anyNoteBit); }
-        //private void SetAnyNoteOff() { SetBit0(_anyNoteIndex, _anyNoteBit); }
-        //private void SetAnyNote(bool on) { if (on) SetAnyNoteOn(); else SetAnyNoteOff(); }
-        //private void UpdateAnyNote()
-        //{
-        //    if (__buttons[0] != 0
-        //        || __buttons[1] != 0
-        //        || __buttons[2] != 0
-        //        || __buttons[3] != 0)
-        //        SetAnyNoteOn();
-        //    else
-        //        SetAnyNoteOff();
-
-        //    if ((__buttons[0] & _anyWhiteNoteMask0) != 0
-        //        || (__buttons[1] & _anyWhiteNoteMask1) != 0
-        //        || (__buttons[2] & _anyWhiteNoteMask2) != 0
-        //        || (__buttons[3] & _anyWhiteNoteMask3) != 0
-        //        )
-        //        SetAnyWhiteNoteOn();
-        //    else
-        //        SetAnyWhiteNoteOff();
-
-        //    if ((__buttons[0] & ~_anyWhiteNoteMask0) != 0
-        //        || (__buttons[1] & ~_anyWhiteNoteMask1) != 0
-        //        || (__buttons[2] & ~_anyWhiteNoteMask2) != 0
-        //        || (__buttons[3] & ~_anyWhiteNoteMask3) != 0
-        //        )
-        //        SetAnyBlackNoteOn();
-        //    else
-        //        SetAnyBlackNoteOff();
-        //}
-
-        ////AnyWhiteNote(Change from SetNote)
-        //private byte _anyWhiteNoteIndex => 4;
-        //private uint _anyWhiteNoteBit => 0b0000_0000_0000_0000_0000_0000_0010_0000;//(1 << 5)
-        //public bool GetAnyWhiteNote() { return GetBit(_anyWhiteNoteIndex, _anyWhiteNoteBit); }
-        //public void SetAnyWhiteNoteOn() { SetBit1(_anyWhiteNoteIndex, _anyWhiteNoteBit); }
-        //public void SetAnyWhiteNoteOff() { SetBit0(_anyWhiteNoteIndex, _anyWhiteNoteBit); }
-        //public void SetAnyWhiteNote(bool on) { if (on) SetAnyWhiteNoteOn(); else SetAnyWhiteNoteOff(); }
-
-        ////AnyBlackNote(Change from SetNote)
-        //private byte _anyBlackNoteIndex => 4;
-        //private uint _anyBlackNoteBit => 0b0000_0000_0000_0000_0000_0000_0100_0000;//(1 << 6)
-        //public bool GetAnyBlackNote() { return GetBit(_anyBlackNoteIndex, _anyBlackNoteBit); }
-        //public void SetAnyBlackNoteOn() { SetBit1(_anyBlackNoteIndex, _anyBlackNoteBit); }
-        //public void SetAnyBlackNoteOff() { SetBit0(_anyBlackNoteIndex, _anyBlackNoteBit); }
-        //public void SetAnyBlackNote(bool on) { if (on) SetAnyBlackNoteOn(); else SetAnyBlackNoteOff(); }
-
-        ////Common Methods
-        //private bool GetBit(byte index, uint bit) { return (__buttons[index] & bit) != 0; }
-        //private void SetBit1(byte index, uint bit) { __buttons[index] |= bit; }
-        //private void SetBit0(byte index, uint bit) { __buttons[index] &= ~bit; }
-
     }
 }

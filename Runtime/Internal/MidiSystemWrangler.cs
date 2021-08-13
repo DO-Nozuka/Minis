@@ -23,18 +23,6 @@ namespace Minis
 
         static void RegisterLayout()
         {
-            //InputSystem.RegisterLayout<MidiNoteControl>("MidiNote");
-            //InputSystem.RegisterLayout<MidiCCControl>("MidiValue");
-            //InputSystem.RegisterLayout<MidiPitchBendControl>("MidiPitch");
-            //InputSystem.RegisterLayout<MidiPitchUpControl>("MidiPitchUp");
-            //InputSystem.RegisterLayout<MidiPitchDownControl>("MidiPitchDown");
-            //InputSystem.RegisterLayout<MidiProgramChangeControl>("MidiProgramChange");
-            //InputSystem.RegisterLayout<KeyControl>("Key");
-
-            InputSystem.RegisterLayout<MidiVector3Device>(
-                matches: new InputDeviceMatcher().WithInterface("Minis")
-                );
-
             InputSystem.RegisterLayout<MidiVector3Device>(
                 matches: new InputDeviceMatcher().WithInterface("MidiVector3")
                 );

@@ -5,13 +5,11 @@ namespace Minis.Runtime.MidiButtonDevice
 {
     public partial class MidiButtonDevice : InputDevice //TODO: It is better to share the same interface with MidiVector3Device.
     {
-        static MidiButtonDeviceState _switchState;
+        static MidiButtonDeviceState _state;
 
-        #region MIDI event receiver (invoked from MidiPort)
-        //---- Main Process(use QueueEvent) ----
         public unsafe void ProcessNoteOn(byte stats, byte note, byte velocity)
         {
-            _switchState.SetNoteOn(note);
+            _state.SetNoteOn(note);
 
             // Send to additional controls
             ProcessAnyNoteOn(stats, note, velocity);
@@ -20,13 +18,13 @@ namespace Minis.Runtime.MidiButtonDevice
             else
                 ProcessAnyBlackNoteOn(stats, note, velocity);
 
-            InputSystem.QueueDeltaStateEvent(this, _switchState);
+            InputSystem.QueueDeltaStateEvent(this, _state);
         }
 
 
         public void ProcessNoteOff(byte stats, byte note, byte velocity)
         {
-            _switchState.SetNoteOff(note);
+            _state.SetNoteOff(note);
 
             // Send to additional controls
             ProcessAnyNoteOff(stats, note, velocity);
@@ -35,12 +33,12 @@ namespace Minis.Runtime.MidiButtonDevice
             else
                 ProcessAnyBlackNoteOff(stats, note, velocity);
 
-            InputSystem.QueueDeltaStateEvent(this, _switchState);
+            InputSystem.QueueDeltaStateEvent(this, _state);
         }
 
         public void ProcessControlChange(byte stats, byte number, byte value)
         {
-            InputSystem.QueueDeltaStateEvent(this, _switchState);
+            InputSystem.QueueDeltaStateEvent(this, _state);
         }
 
         private bool IsLastPitchUp = false;
@@ -74,13 +72,13 @@ namespace Minis.Runtime.MidiButtonDevice
             }
 
 
-            InputSystem.QueueDeltaStateEvent(this, _switchState);
+            InputSystem.QueueDeltaStateEvent(this, _state);
         }
 
         public void ProcessProgramChange(byte stats, byte value)
         {
 
-            InputSystem.QueueDeltaStateEvent(this, _switchState);
+            InputSystem.QueueDeltaStateEvent(this, _state);
         }
 
         //---- Sub Process(not use QueueEvent) ----
@@ -114,13 +112,13 @@ namespace Minis.Runtime.MidiButtonDevice
         private void ProcessPitchUp(byte stats, byte value1, byte value2)
         {
             var value = MidiMessage.GetPitchBendValue(value1, value2);
-            _switchState.SetPitch(true, value > 0);
+            _state.SetPitch(true, value > 0);
         }
 
         private void ProcessPitchDown(byte stats, byte value1, byte value2)
         {
             var value = MidiMessage.GetPitchBendValue(value1, value2);
-            _switchState.SetPitch(false, value < 0);
+            _state.SetPitch(false, value < 0);
         }
 
         private void ProcessModulation(short modulationValue)
@@ -131,6 +129,5 @@ namespace Minis.Runtime.MidiButtonDevice
             //    _keyModulation.QueueValueChange(1.0f);
         }
 
-        #endregion
     }
 }
