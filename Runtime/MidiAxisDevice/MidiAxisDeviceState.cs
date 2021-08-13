@@ -11,6 +11,8 @@ namespace Minis.Runtime.MidiAxisDevice
     [StructLayout(LayoutKind.Auto)]//, Size = 20)]   //Size : in Byte Note:16, Pitch:4, AnyNote:4 
     public unsafe struct MidiAxisDeviceState : IInputStateTypeInfo
     {
+        public FourCC format => new FourCC('M', 'I', 'D', 'A'); //MIDi Axis
+
         [InputControl(name = "AxisNote000", layout = "Axis", offset = InputStateBlock.AutomaticOffset)]
         [InputControl(name = "AxisNote001", layout = "Axis", offset = InputStateBlock.AutomaticOffset)]
         [InputControl(name = "AxisNote002", layout = "Axis", offset = InputStateBlock.AutomaticOffset)]
@@ -140,10 +142,6 @@ namespace Minis.Runtime.MidiAxisDevice
         [InputControl(name = "AxisNote126", layout = "Axis", offset = InputStateBlock.AutomaticOffset)]
         [InputControl(name = "AxisNote127", layout = "Axis", offset = InputStateBlock.AutomaticOffset)]
         public fixed float __axisNote[128];
-
-
-        public FourCC format => new FourCC('M', 'I', 'D', 'A'); //MIDi Axis
-
 
         //Note
         public float this[byte note]

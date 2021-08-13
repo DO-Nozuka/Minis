@@ -1,17 +1,15 @@
 using Dono.MidiUtilities.Runtime;
 using UnityEngine.InputSystem;
 
-namespace Minis.Runtime.MidiButtonDevice
+namespace Minis.Runtime.MidiVector3Device
 {
-    public partial class MidiButtonDevice : InputDevice //TODO: It is better to share the same interface with MidiVector3Device.
+    public partial class MidiVector3Device : InputDevice
     {
-        static MidiButtonDeviceState _switchState;
-
-        #region MIDI event receiver (invoked from MidiPort)
-        //---- Main Process(use QueueEvent) ----
-        public unsafe void ProcessNoteOn(byte stats, byte note, byte velocity)
+        static MidiVector3DeviceState _state;
+        public void ProcessNoteOn(byte stats, byte note, byte velocity)
         {
-            _switchState.SetNoteOn(note);
+            // State update with a delta event
+            _state.SetNoteOn(stats, note, velocity);
 
             // Send to additional controls
             ProcessAnyNoteOn(stats, note, velocity);
@@ -20,13 +18,13 @@ namespace Minis.Runtime.MidiButtonDevice
             else
                 ProcessAnyBlackNoteOn(stats, note, velocity);
 
-            InputSystem.QueueDeltaStateEvent(this, _switchState);
+            InputSystem.QueueDeltaStateEvent(this, _state);
         }
-
 
         public void ProcessNoteOff(byte stats, byte note, byte velocity)
         {
-            _switchState.SetNoteOff(note);
+            // State update with a delta event
+            _state.SetNoteOff(stats, note, velocity);
 
             // Send to additional controls
             ProcessAnyNoteOff(stats, note, velocity);
@@ -35,13 +33,16 @@ namespace Minis.Runtime.MidiButtonDevice
             else
                 ProcessAnyBlackNoteOff(stats, note, velocity);
 
-            InputSystem.QueueDeltaStateEvent(this, _switchState);
+            InputSystem.QueueDeltaStateEvent(this, _state);
         }
 
         public void ProcessControlChange(byte stats, byte number, byte value)
         {
-            InputSystem.QueueDeltaStateEvent(this, _switchState);
+            // State update with a delta event
+            var channel = (byte)(stats & 0x0F);
+            //_controlChanges[number].QueueValueChange(new Vector3(stats, number, value));
         }
+
 
         private bool IsLastPitchUp = false;
         private bool IsLastPitchDown = false;
@@ -52,85 +53,82 @@ namespace Minis.Runtime.MidiButtonDevice
 
             if (value < 0)
             {
-                //Down
                 ProcessPitchDown(stats, value1, value2);
                 IsLastPitchDown = true;
                 IsLastPitchUp = false;
             }
             else if (value > 0)
             {
-                //Up
                 ProcessPitchUp(stats, value1, value2);
                 IsLastPitchDown = false;
                 IsLastPitchUp = true;
             }
             else
             {
-                //Center
                 if (IsLastPitchDown)
                     ProcessPitchDown(stats, value1, value2);
                 else if (IsLastPitchUp)
                     ProcessPitchUp(stats, value1, value2);
             }
 
-
-            InputSystem.QueueDeltaStateEvent(this, _switchState);
+            //State update with a delta event
+            //_pitchBend.QueueValueChange(new Vector3(stats, value1, value2));
         }
 
         public void ProcessProgramChange(byte stats, byte value)
         {
-
-            InputSystem.QueueDeltaStateEvent(this, _switchState);
+            //State update with a delta event
+            var channel = (byte)(stats & 0x0F);
+            //_programChange.QueueValueChange(new Vector3(stats, value, 0x00));
         }
 
-        //---- Sub Process(not use QueueEvent) ----
+        //----
         private void ProcessAnyNoteOn(byte stats, byte note, byte velocity)
         {
-            //_anyKeyNote.QueueValueChange(1.0f);
+            //_anyNote.QueueValueChange(new Vector3(stats, note, velocity));
         }
         private void ProcessAnyNoteOff(byte stats, byte note, byte velocity)
         {
-            //_anyKeyNote.QueueValueChange(0.0f);
+            //_anyNote.QueueValueChange(new Vector3(stats, note, velocity));
         }
 
         private void ProcessAnyWhiteNoteOn(byte stats, byte note, byte velocity)
         {
-            //_anyWhiteKeyNote.QueueValueChange(1.0f);
+            //_anyWhiteNote.QueueValueChange(new Vector3(stats, note, velocity));
         }
         private void ProcessAnyWhiteNoteOff(byte stats, byte note, byte velocity)
         {
-            //_anyWhiteKeyNote.QueueValueChange(0.0f);
+            //_anyWhiteNote.QueueValueChange(new Vector3(stats, note, velocity));
         }
-
         private void ProcessAnyBlackNoteOn(byte stats, byte note, byte velocity)
         {
-            //_anyBlackKeyNote.QueueValueChange(1.0f);
+            //_anyBlackNote.QueueValueChange(new Vector3(stats, note, velocity));
         }
         private void ProcessAnyBlackNoteOff(byte stats, byte note, byte velocity)
         {
-            //_anyBlackKeyNote.QueueValueChange(0.0f);
+            //_anyBlackNote.QueueValueChange(new Vector3(stats, note, velocity));
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value">0.0to1.0f</param>
+        /// <param name="channel">0to15</param>
         private void ProcessPitchUp(byte stats, byte value1, byte value2)
         {
-            var value = MidiMessage.GetPitchBendValue(value1, value2);
-            _switchState.SetPitch(true, value > 0);
+            // State update with a delta event
+            //InputSystem.QueueDeltaStateEvent(_pitchUp, new Vector3(stats, value1, value2));
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value">0.0to1.0f</param>
+        /// <param name="channel">0to15</param>
         private void ProcessPitchDown(byte stats, byte value1, byte value2)
         {
-            var value = MidiMessage.GetPitchBendValue(value1, value2);
-            _switchState.SetPitch(false, value < 0);
+            // State update with a delta event
+            //InputSystem.QueueDeltaStateEvent(_pitchDown, new Vector3(stats, value1, value2));
         }
-
-        private void ProcessModulation(short modulationValue)
-        {
-            //if (modulation == 0)
-            //    _keyModulation.QueueValueChange(0.0f);
-            //else
-            //    _keyModulation.QueueValueChange(1.0f);
-        }
-
-        #endregion
     }
 }

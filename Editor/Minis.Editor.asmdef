@@ -2,8 +2,7 @@
     "name": "Minis.Editor",
     "rootNamespace": "",
     "references": [
-        "GUID:3cf880eded94e96448da8e821b15f5f0",
-        "GUID:1bd72f093d87f9343a0faf943ae4a530"
+        "GUID:5192e5fb09e28284981de90795841c75"
     ],
     "includePlatforms": [
         "Editor"

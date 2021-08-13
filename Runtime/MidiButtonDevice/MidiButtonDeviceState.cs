@@ -11,6 +11,8 @@ namespace Minis.Runtime.MidiButtonDevice
     [StructLayout(LayoutKind.Explicit, Size = 20)]   //Size : in Byte Note:16, Pitch:4, AnyNote:4 
     public unsafe struct MidiButtonDeviceState : IInputStateTypeInfo
     {
+        public FourCC format => new FourCC('M', 'I', 'D', 'K'); //MIDi Key
+
         //__buttons[0]
         [InputControl(name = "BtnNote000", layout = "Button", bit = 0, displayName = "BtnNote000")]
         [InputControl(name = "BtnNote001", layout = "Button", bit = 1, displayName = "BtnNote001")]
@@ -178,8 +180,6 @@ namespace Minis.Runtime.MidiButtonDevice
         [InputControl(name = "None", layout = "Button", bit = 31 +128, displayName = "None")]
         [FieldOffset(0)]
         public fixed uint __buttons[5];
-
-        public FourCC format => new FourCC('M', 'I', 'D', 'K'); //MIDi Key
 
         //Note
         public bool this[byte note]
