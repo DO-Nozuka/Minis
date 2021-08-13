@@ -22,8 +22,8 @@ namespace Minis.Runtime.MidiVector3Device
         [InputControl(name = "Vec3NoteOn", layout = "Vector3")]
         public Vector3 __vec3NoteOn;
         //0xAn
-        [InputControl(name = "Vec3PPK", layout = "Vector3")]
-        public Vector3 __vec3PPK;
+        [InputControl(name = "Vec3PP", layout = "Vector3")]
+        public Vector3 __vec3PP;
         //0xBn
         [InputControl(name = "Vec3CC", layout = "Vector3")]
         public Vector3 __vec3CC;
@@ -59,9 +59,9 @@ namespace Minis.Runtime.MidiVector3Device
             SetAnyNote(stats, data1, data2);
             SetAnyMsg(stats, data1, data2);
         }
-        public void SetPPK(byte stats, byte data1, byte data2) 
+        public void SetPP(byte stats, byte data1, byte data2) 
         {
-            __vec3PPK.Set(stats, data1, data2);
+            __vec3PP.Set(stats, data1, data2);
             SetAnyMsg(stats, data1, data2);
         }
         public void SetCC(byte stats, byte data1, byte data2) 

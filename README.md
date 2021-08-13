@@ -4,7 +4,7 @@ Original => https://github.com/keijiro/Minis
 
 Why
 ----------------------------------------------------------------
-I need to get PitchBend and ProgramChange.
+I need to get PitchBend, ProgramChange and more functions.
 
 How To Install
 ----------------------------------------------------------------
@@ -16,69 +16,70 @@ https://github.com/DO-Nozuka/Minis.git
 How To Use
 ----------------------------------------------------------------
 You can use midi device with InputSystem.
+Some functions are not yet implemented!
+Some functions are not yet implemented!!
+Some functions are not yet implemented!!!
+
 Recommend: Action Type = Pass Through
 
-NoteOn: Vector3(stats, note, velocity)
-    //velocity = 0(NoteOff)
-    velocity = 1-127(NoteOn)
-    channel = 0-15
-    
-NoteOff: Vector3(stats, note, velocity)
-    velocity = 0-127
-    channel = 0-15
+----------------
+ Vector3
+----------------
+Raw midi message will be stored.
 
-ControlChange: Vector3(stats, number, value)
-    value = 0-127
-    channel = 0-15
+Vec3NoteOff: Vector3(stats, data1, data2)
+    0x8n Note Off.
+Vec3NoteOn: Vector3(stats, data1, data2)
+    0x9n Note On.
+    Velocity(data2) is not zero.
+Vec3PP: Vector3(stats, data1, data2)
+    0xAn Polyphonic key Presure.
+Vec3CC: Vector3(stats, data1, data2)
+    0xBn Control Change.
+Vec3PC: Vector3(stats, data1, data2)
+    0xCn Program Change.
+Vec3CP: Vector3(stats, data1, data2)
+    0xDn Channel Pressure.
+Vec3Pitch: Vector3(stats, data1, data2)
+    0xEn Pitch Bend Change.
+Vec3SysMsg: Vector3(stats, data1, data2)
+    0xFn Only for data length 3 or less
 
-PitchBend: Vector3(stats, value1, value2)
-    value = (-1.0)-(1.0)
-    channel = 0-15
-    
-ProgramChange: Vector3(stats, value, 0)
-    value = 0-127
-    channnel = 0-15
-    
---------
-AnyNoteOn: Vector3(stats, value1, value2)
-    velocity = 0(NoteOff)
-    velocity = 1-127(NoteOn)
-    channel = 0-15
-    
-AnyNoteOff: Vector3(stats, value1, value2)
-    velocity = 0(NoteOff)
-    velocity = 1-127(NoteOn)
-    channel = 0-15
-    
-AnyWhiteNoteOn: Vector3(stats, value1, value2)
-    velocity = 0(NoteOff)
-    velocity = 1-127(NoteOn)
-    channel = 0-15
-    
-AnyWhiteNoteOff: Vector3(stats, value1, value2)
-    velocity = 0(NoteOff)
-    velocity = 1-127(NoteOn)
-    channel = 0-15
-    
-AnyBlackNoteOn: Vector3(stats, value1, value2)
-    velocity = 0(NoteOff)
-    velocity = 1-127(NoteOn)
-    channel = 0-15
-    
-AnyBlackNoteOff: Vector3(stats, value1, value2)
-    velocity = 0(NoteOff)
-    velocity = 1-127(NoteOn)
-    channel = 0-15
+Vec3AnyNote: Vector3(stats, data1, data2)
+    NoteOn and NoteOff
+Vec3AnyMsg: Vector3(stats, data1, data2)
+    It can get all midi message.
+    Only for data length 3 or less.
 
-PitchUp: Vector3(stats, value1, value2)
-    value = 0-1.0
-    channnel = 0-15
+----------------
+ Axis
+----------------
+AxisNoteXXX: Axis(Velocity)
+    XXX: Note Number
+    Velocity:   NoteOn127 => 1.0f, NoteOff127 => -1.0f
 
-PitchDown: Vector3(stats, value1, value2)
-    value = 0-1.0 (caution: Not a Negative number)
-    channnel = 0-15
---------
+----------------
+ Button
+----------------
+BtnNoteXXX: Axis(On/Off)
+    XXX: Note Number
+    On/Off: On => 1.0f, Off => 0.0f
+BtnPitchUp: Axis(On/Off)
+    On/Off: On => 1.0f, Off => 0.0f
+BtnPitchDown: Axis(On/Off)
+    On/Off: On => 1.0f, Off => 0.0f
+AnyBtnNote: Axis(On/Off)
+    On/Off: On => 1.0f, Off => 0.0f
+AnyWhiteBtnNote: Axis(On/Off)
+    On/Off: On => 1.0f, Off => 0.0f
+AnyBlackBtnNote: Axis(On/Off)
+    On/Off: On => 1.0f, Off => 0.0f
 
+----------------
+ Integer
+----------------
+    ControlChange to be implemented.
+  
 ----------------------------------------------------------------
 Update
 ----------------------------------------------------------------
@@ -86,3 +87,4 @@ Update
 1.1.1: AddProgramChange
 1.1.2: Vector2 => Vector3
 1.1.3: Add Button Type
+1.3.0: Add Axis, Major changes to the specifications for MidiVector3Device.

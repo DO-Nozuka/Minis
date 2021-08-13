@@ -5,7 +5,7 @@ using UnityEngine.InputSystem.Layouts;
 
 namespace Minis.Runtime.MidiVector3Device
 {
-    [InputControlLayout(stateType = typeof(MidiVector3DeviceState), displayName = "MIDI Device")]
+    [InputControlLayout(stateType = typeof(MidiVector3DeviceState), displayName = "MIDI Vector3 Device")]
     public partial class MidiVector3Device : InputDevice
     {
         public static MidiVector3Device current { get; private set; }

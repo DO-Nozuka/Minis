@@ -7,7 +7,7 @@ using UnityEngine.InputSystem.Layouts;
 namespace Minis.Runtime.MidiAxisDevice
 {
     [InputControlLayout(stateType = typeof(MidiAxisDeviceState), displayName = "MIDI Axis Device")]
-    public partial class MidiAxisDevice : InputDevice //TODO: It is better to share the same interface with MidiVector3Device.
+    public partial class MidiAxisDevice : InputDevice
     {
         public static MidiAxisDevice current { get; private set; }
 
