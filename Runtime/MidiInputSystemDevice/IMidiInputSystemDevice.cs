@@ -1,6 +1,3 @@
-using Dono.MidiUtilities.Runtime;
-using UnityEngine.InputSystem;
-
 namespace Minis.Runtime.MidiInputSystemDevice
 {
     public interface IMidiInputSystemDevice //TODO: It is better to share the same interface with MidiVector3Device.

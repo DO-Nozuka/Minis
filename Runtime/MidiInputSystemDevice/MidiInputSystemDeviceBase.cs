@@ -4,9 +4,9 @@ using UnityEngine.InputSystem.Layouts;
 
 namespace Minis.Runtime.MidiInputSystemDevice
 {
-    public abstract partial class MidiInputSystemDevice : InputDevice, IMidiInputSystemDevice
+    public abstract partial class MidiInputSystemDeviceBase : InputDevice, IMidiInputSystemDevice
     {
-        public static MidiInputSystemDevice current { get; private set; }
+        public static MidiInputSystemDeviceBase current { get; private set; }
 
         // protected override void FinishSetup()
         // {
