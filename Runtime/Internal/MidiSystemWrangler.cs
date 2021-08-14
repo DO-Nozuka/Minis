@@ -2,10 +2,10 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.LowLevel;
 using System.Linq;
-using UnityEngine.InputSystem.Controls;
 using Minis.Runtime.MidiButtonDevice;
 using Minis.Runtime.MidiVector3Device;
 using Minis.Runtime.MidiAxisNoteDevice;
+using Minis.Runtime.MidiAxis2ByteCCDevice;
 
 namespace Minis
 {
@@ -32,6 +32,10 @@ namespace Minis
             InputSystem.RegisterLayout<MidiAxisNoteDevice>(
                 matches: new InputDeviceMatcher().WithInterface("MidiAxisNote")
                 );
+            InputSystem.RegisterLayout<MidiAxis2ByteCCDevice>(
+                matches: new InputDeviceMatcher().WithInterface("MidiAxis2ByteCC")
+                );
+
         }
 
         #endregion

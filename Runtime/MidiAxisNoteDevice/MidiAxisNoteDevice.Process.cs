@@ -76,7 +76,6 @@ namespace Minis.Runtime.MidiAxisNoteDevice
 
         public void ProcessProgramChange(byte stats, byte value)
         {
-
             InputSystem.QueueDeltaStateEvent(this, _state);
         }
 
@@ -104,12 +103,10 @@ namespace Minis.Runtime.MidiAxisNoteDevice
 
         private void ProcessPitchUp(byte stats, byte value1, byte value2)
         {
-            var value = MidiMessage.GetPitchBendValue(value1, value2);
         }
 
         private void ProcessPitchDown(byte stats, byte value1, byte value2)
         {
-            var value = MidiMessage.GetPitchBendValue(value1, value2);
         }
 
         private void ProcessModulation(short modulationValue)

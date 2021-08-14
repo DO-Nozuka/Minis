@@ -1,13 +1,9 @@
 {
-    "name": "Minis.Runtime.Internal",
+    "name": "Minis.Runtime.MidiAxis2ByteCCDevice",
     "rootNamespace": "",
     "references": [
-        "GUID:c7e9e20acafe53118b1ee620f925d4c8",
         "GUID:75469ad4d38634e559750d17036d5f7c",
-        "GUID:3cf880eded94e96448da8e821b15f5f0",
-        "GUID:84e98eb776a15bb4a8ffcf82192ea7f5",
-        "GUID:09a91fff4d973f94196be5927da2bf21",
-        "GUID:eb9d4a0fafb802f4aabe4fc211598fa8"
+        "GUID:e348eb0bc7ba495499081c854aa42f2d"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
