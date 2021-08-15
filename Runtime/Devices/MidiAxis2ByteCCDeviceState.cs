@@ -1,13 +1,9 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using UnityEngine;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
 
-namespace Minis.Runtime.MidiAxis2ByteCCDevice
+namespace Minis.Runtime.Devices
 {
     [StructLayout(LayoutKind.Auto)]
     public unsafe struct MidiAxis2ByteCCDeviceState : IInputStateTypeInfo

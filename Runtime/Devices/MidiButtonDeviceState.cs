@@ -1,12 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using UnityEngine;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
 
-namespace Minis.Runtime.MidiButtonDevice
+namespace Minis.Runtime.Devices
 {
     [StructLayout(LayoutKind.Explicit, Size = 20)]   //Size : in Byte Note:16, Pitch:4, AnyNote:4 
     public unsafe struct MidiButtonDeviceState : IInputStateTypeInfo

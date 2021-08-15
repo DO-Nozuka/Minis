@@ -1,12 +1,9 @@
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem;
 using RtMidiDll = RtMidi.Unmanaged;
-using Minis.Runtime.MidiButtonDevice;
-using Minis.Runtime.MidiVector3Device;
-using Minis.Runtime.MidiAxisNoteDevice;
-using Minis.Runtime.MidiAxis2ByteCCDevice;
+using Minis.Runtime.Devices;
 
-namespace Minis
+namespace Minis.Runtime.Internal
 {
     //
     // MIDI port class that manages an RtMidi input object and MIDI device

@@ -1,7 +1,7 @@
 using Dono.MidiUtilities.Runtime;
 using UnityEngine.InputSystem;
 
-namespace Minis.Runtime.MidiVector3Device
+namespace Minis.Runtime.Devices
 {
     public partial class MidiVector3Device : InputDevice
     {

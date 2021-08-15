@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Users;
 
-namespace Minis.Runtime.MidiVector3Device
+namespace Minis.Runtime.Internal
 {
     //
     // MIDI device assigner class that pairs a PlayerInput with a MIDI device

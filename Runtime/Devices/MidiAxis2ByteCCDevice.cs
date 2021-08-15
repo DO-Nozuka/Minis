@@ -1,14 +1,12 @@
-using Dono.MidiUtilities.Runtime;
-using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
 
-namespace Minis.Runtime.MidiVector3Device
+namespace Minis.Runtime.Devices
 {
-    [InputControlLayout(stateType = typeof(MidiVector3DeviceState), displayName = "MIDI Vector3 Device")]
-    public partial class MidiVector3Device : InputDevice
+    [InputControlLayout(stateType = typeof(MidiAxis2ByteCCDeviceState), displayName = "MIDI Axis 2ByteCC Device")]
+    public partial class MidiAxis2ByteCCDevice : InputDevice, IMidiInputSystemDevice
     {
-        public static MidiVector3Device current { get; private set; }
+        public static MidiAxis2ByteCCDevice current { get; private set; }
 
         protected override void FinishSetup()
         {

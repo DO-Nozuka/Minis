@@ -5,7 +5,7 @@ using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
 
-namespace Minis.Runtime.MidiVector3Device
+namespace Minis.Runtime.Devices
 {
     //
     // MIDI state struct with 128 notes and 128 controls

@@ -1,7 +1,7 @@
 using Marshal = System.Runtime.InteropServices.Marshal;
 using RtMidiDll = RtMidi.Unmanaged;
 
-namespace Minis
+namespace Minis.Runtime.Internal
 {
     //
     // MIDI probe class used for enumerating MIDI ports

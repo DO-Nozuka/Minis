@@ -2,12 +2,9 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.LowLevel;
 using System.Linq;
-using Minis.Runtime.MidiButtonDevice;
-using Minis.Runtime.MidiVector3Device;
-using Minis.Runtime.MidiAxisNoteDevice;
-using Minis.Runtime.MidiAxis2ByteCCDevice;
+using Minis.Runtime.Devices;
 
-namespace Minis
+namespace Minis.Runtime.Internal
 {
     //
     // Wrangler class that installs/uninstalls MIDI subsystems on system events

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Minis
+namespace Minis.Runtime.Internal
 {
     //
     // MIDI device driver class that manages all MIDI ports (interfaces) found

@@ -1,18 +1,18 @@
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
 
-namespace Minis.Runtime.MidiButtonDevice
+namespace Minis.Runtime.Devices
 {
-    [InputControlLayout(stateType = typeof(MidiButtonDeviceState), displayName = "MIDI Button Device")]
-    public partial class MidiButtonDevice : InputDevice
+    [InputControlLayout(stateType = typeof(MidiAxisNoteDeviceState), displayName = "MIDI Axis Note Device")]
+    public partial class MidiAxisNoteDevice : InputDevice
     {
-        public static MidiButtonDevice current { get; private set; }
+        public static MidiAxisNoteDevice current { get; private set; }
 
         protected override void FinishSetup()
         {
             base.FinishSetup();
         }
-        
+
         public override void MakeCurrent()
         {
             base.MakeCurrent();

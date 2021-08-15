@@ -1,4 +1,4 @@
-namespace Minis.Runtime.MidiInputSystemDevice
+namespace Minis.Runtime.Devices
 {
     public interface IMidiInputSystemDevice //TODO: It is better to share the same interface with MidiVector3Device.
     {
