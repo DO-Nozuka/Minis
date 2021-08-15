@@ -2,7 +2,7 @@ using UnityEngine.InputSystem;
 
 namespace Minis.Runtime.Devices
 {
-    public partial class MidiAxis2ByteCCDevice : InputDevice, IMidiInputSystemDevice //TODO: It is better to share the same interface with MidiVector3Device.
+    public partial class MidiAxis2ByteCCDevice : InputDevice, IMidiInputSystemDevice
     {
         static MidiAxis2ByteCCDeviceState _state;
         private byte[] cc = new byte[128];

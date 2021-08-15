@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 namespace Minis.Runtime.Devices
 {
-    public partial class MidiAxisNoteDevice : InputDevice //TODO: It is better to share the same interface with MidiVector3Device.
+    public partial class MidiAxisNoteDevice : InputDevice, IMidiInputSystemDevice
     {
         static MidiAxisNoteDeviceState _state;
 

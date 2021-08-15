@@ -2,6 +2,8 @@ using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem;
 using RtMidiDll = RtMidi.Unmanaged;
 using Minis.Runtime.Devices;
+using System.Collections.Generic;
+using System;
 
 namespace Minis.Runtime.Internal
 {
@@ -16,11 +18,11 @@ namespace Minis.Runtime.Internal
         RtMidiDll.Wrapper* _rtmidi;
         string _portName;
 
+        List<IMidiInputSystemDevice> midiDevices = new List<IMidiInputSystemDevice>();
         private MidiVector3Device __midiVector3Device;
         private MidiButtonDevice __midiSwitchDevice;
         private MidiAxisNoteDevice __midiAxisNoteDevice;
         private MidiAxis2ByteCCDevice __midiAxis2ByteCCDevice;
-
 
         private MidiVector3Device GetMidiVector3Device()
         {
@@ -120,9 +122,20 @@ namespace Minis.Runtime.Internal
             System.GC.SuppressFinalize(this);
         }
 
+
         public void ProcessMessageQueue()
         {
             if (_rtmidi == null || !_rtmidi->ok) return;
+
+            midiDevices.Clear();
+            if (GetMidiVector3Device() is IMidiInputSystemDevice device0)
+                midiDevices.Add(device0);
+            if (GetMidiSwitchDevice() is IMidiInputSystemDevice device1)
+                midiDevices.Add(device1);
+            if (GetMidiAxisDevice() is IMidiInputSystemDevice device2)
+                midiDevices.Add(device2);
+            if (GetMidi2ByteCCDevice() is IMidiInputSystemDevice device3)
+                midiDevices.Add(device3);
 
             while (true)
             {
@@ -142,41 +155,42 @@ namespace Minis.Runtime.Internal
                 var noteOn = status == 9 && data2 != 0;
                 var noteOff = (status == 8) || (status == 9 && data2 == 0);
 
+
                 if (noteOn && size == 3)
                 {
-                    GetMidiVector3Device().ProcessNoteOn(message[0], message[1], message[2]);
-                    GetMidiSwitchDevice().ProcessNoteOn(message[0], message[1], message[2]);
-                    GetMidiAxisDevice().ProcessNoteOn(message[0], message[1], message[2]);
-                    GetMidi2ByteCCDevice().ProcessNoteOn(message[0], message[1], message[2]);
+                    foreach(var midiDevice in midiDevices)
+                    {
+                        midiDevice.ProcessNoteOn(message[0], message[1], message[2]);
+                    }
                 }
                 else if (noteOff && size == 3)
                 {
                     message[0] = (byte)(0x80 + channel);    //0x9n vel=0 => 0x8n vel=0ÅB
-                    GetMidiVector3Device().ProcessNoteOff(message[0], message[1], message[2]);
-                    GetMidiSwitchDevice().ProcessNoteOff(message[0], message[1], message[2]);
-                    GetMidiAxisDevice().ProcessNoteOff(message[0], message[1], message[2]);
-                    GetMidi2ByteCCDevice().ProcessNoteOff(message[0], message[1], message[2]);
+                    foreach (var midiDevice in midiDevices)
+                    {
+                        midiDevice.ProcessNoteOff(message[0], message[1], message[2]);
+                    }
                 }
                 else if (status == 0xB && size == 3)
                 {
-                    GetMidiVector3Device().ProcessControlChange(message[0], message[1], message[2]);
-                    GetMidiSwitchDevice().ProcessControlChange(message[0], message[1], message[2]);
-                    GetMidiAxisDevice().ProcessControlChange(message[0], message[1], message[2]);
-                    GetMidi2ByteCCDevice().ProcessControlChange(message[0], message[1], message[2]);
+                    foreach (var midiDevice in midiDevices)
+                    {
+                        midiDevice.ProcessControlChange(message[0], message[1], message[2]);
+                    }
                 }
                 else if (status == 0xC && size == 2)
                 {
-                    GetMidiVector3Device().ProcessProgramChange(message[0], message[1]);
-                    GetMidiSwitchDevice().ProcessProgramChange(message[0], message[1]);
-                    GetMidiAxisDevice().ProcessProgramChange(message[0], message[1]);
-                    GetMidi2ByteCCDevice().ProcessProgramChange(message[0], message[1]);
+                    foreach (var midiDevice in midiDevices)
+                    {
+                        midiDevice.ProcessProgramChange(message[0], message[1]);
+                    }
                 }
                 else if (status == 0xE && size == 3)
                 {
-                    GetMidiVector3Device().ProcessPitchBend(message[0], message[1], message[2]);
-                    GetMidiSwitchDevice().ProcessPitchBend(message[0], message[1], message[2]);
-                    GetMidiAxisDevice().ProcessPitchBend(message[0], message[1], message[2]);
-                    GetMidi2ByteCCDevice().ProcessPitchBend(message[0], message[1], message[2]);
+                    foreach (var midiDevice in midiDevices)
+                    {
+                        midiDevice.ProcessPitchBend(message[0], message[1], message[2]);
+                    }
                 }
             }
         }

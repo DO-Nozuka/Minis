@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 namespace Minis.Runtime.Devices
 {
-    public partial class MidiButtonDevice : InputDevice //TODO: It is better to share the same interface with MidiVector3Device.
+    public partial class MidiButtonDevice : InputDevice, IMidiInputSystemDevice
     {
         static MidiButtonDeviceState _state;
 

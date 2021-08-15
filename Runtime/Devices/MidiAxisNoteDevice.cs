@@ -4,7 +4,7 @@ using UnityEngine.InputSystem.Layouts;
 namespace Minis.Runtime.Devices
 {
     [InputControlLayout(stateType = typeof(MidiAxisNoteDeviceState), displayName = "MIDI Axis Note Device")]
-    public partial class MidiAxisNoteDevice : InputDevice
+    public partial class MidiAxisNoteDevice : InputDevice, IMidiInputSystemDevice
     {
         public static MidiAxisNoteDevice current { get; private set; }
 

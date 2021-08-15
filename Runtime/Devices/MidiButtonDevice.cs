@@ -4,7 +4,7 @@ using UnityEngine.InputSystem.Layouts;
 namespace Minis.Runtime.Devices
 {
     [InputControlLayout(stateType = typeof(MidiButtonDeviceState), displayName = "MIDI Button Device")]
-    public partial class MidiButtonDevice : InputDevice
+    public partial class MidiButtonDevice : InputDevice, IMidiInputSystemDevice
     {
         public static MidiButtonDevice current { get; private set; }
 

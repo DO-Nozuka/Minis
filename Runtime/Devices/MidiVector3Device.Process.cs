@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 namespace Minis.Runtime.Devices
 {
-    public partial class MidiVector3Device : InputDevice
+    public partial class MidiVector3Device : InputDevice, IMidiInputSystemDevice
     {
         static MidiVector3DeviceState _state;
         public void ProcessNoteOn(byte stats, byte note, byte velocity)
