@@ -87,3 +87,4 @@ Update
 1.1.2: Vector2 => Vector3  
 1.1.3: Add Button Type  
 1.3.0: Add Axis, Major changes to the specifications for MidiVector3Device.  
+1.3.1: Add Axis Pitch Device
