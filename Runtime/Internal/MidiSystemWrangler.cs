@@ -32,7 +32,9 @@ namespace Minis.Runtime.Internal
             InputSystem.RegisterLayout<MidiAxis2ByteCCDevice>(
                 matches: new InputDeviceMatcher().WithInterface("MidiAxis2ByteCC")
                 );
-
+            InputSystem.RegisterLayout<MidiAxisPitchDevice>(
+                matches: new InputDeviceMatcher().WithInterface("MidiAxisPitch")
+                );
         }
 
         #endregion

@@ -23,6 +23,7 @@ namespace Minis.Runtime.Internal
         private MidiButtonDevice __midiSwitchDevice;
         private MidiAxisNoteDevice __midiAxisNoteDevice;
         private MidiAxis2ByteCCDevice __midiAxis2ByteCCDevice;
+        private MidiAxisPitchDevice __midiAxisPitchDevice;
 
         private MidiVector3Device GetMidiVector3Device()
         {
@@ -77,6 +78,19 @@ namespace Minis.Runtime.Internal
             }
 
             return __midiAxis2ByteCCDevice;
+        } 
+        private MidiAxisPitchDevice GetMidiAxisPitchDevice()
+        {
+            if (__midiAxisPitchDevice is null)
+            {
+                var desc = new InputDeviceDescription
+                {
+                    interfaceName = "MidiAxisPitch"
+                };
+                __midiAxisPitchDevice = (MidiAxisPitchDevice)InputSystem.AddDevice(desc);
+            }
+
+            return __midiAxisPitchDevice;
         }
 
         #endregion
@@ -118,6 +132,8 @@ namespace Minis.Runtime.Internal
                 InputSystem.RemoveDevice(__midiAxisNoteDevice);
             if (__midiAxis2ByteCCDevice is object)
                 InputSystem.RemoveDevice(__midiAxis2ByteCCDevice);
+            if (__midiAxisPitchDevice is object)
+                InputSystem.RemoveDevice(__midiAxisPitchDevice);
 
             System.GC.SuppressFinalize(this);
         }
@@ -136,6 +152,8 @@ namespace Minis.Runtime.Internal
                 midiDevices.Add(device2);
             if (GetMidi2ByteCCDevice() is IMidiInputSystemDevice device3)
                 midiDevices.Add(device3);
+            if (GetMidiAxisPitchDevice() is IMidiInputSystemDevice device4)
+                midiDevices.Add(device4);
 
             while (true)
             {
