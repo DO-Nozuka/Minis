@@ -54,7 +54,12 @@ Raw midi message will be stored.
 * AxisNoteXXX: Axis(Velocity)
     * XXX: Note Number
     * Velocity:   NoteOn127 => 1.0f, NoteOff127 => -1.0f
-
+* AxisPitchUp: Axis(PitchUp)
+    * PitchUp => 0.0f～1.0f
+* AxisPitchDown: Axis(PitchDown)
+    * PitchDown => 0.0f～1.0f
+* AxisPitch: Axis(Pitch)
+    * Pitch => -1.0f～1.0f
  Button
 ----------------
 * BtnNoteXXX: Axis(On/Off)
