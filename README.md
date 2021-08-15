@@ -77,8 +77,8 @@ Raw midi message will be stored.
   
 Update
 ----------------------------------------------------------------
-1.1.0: AddPitchBend
-1.1.1: AddProgramChange
-1.1.2: Vector2 => Vector3
-1.1.3: Add Button Type
-1.3.0: Add Axis, Major changes to the specifications for MidiVector3Device.
+1.1.0: AddPitchBend  
+1.1.1: AddProgramChange  
+1.1.2: Vector2 => Vector3  
+1.1.3: Add Button Type  
+1.3.0: Add Axis, Major changes to the specifications for MidiVector3Device.  
