@@ -47,8 +47,8 @@ namespace Minis.Runtime.Devices
             InputSystem.QueueDeltaStateEvent(this, _state);
         }
 
-        private bool IsLastPitchUp = false;
-        private bool IsLastPitchDown = false;
+        //private bool IsLastPitchUp = false;
+        //private bool IsLastPitchDown = false;
         public void ProcessPitchBend(byte stats, byte value1, byte value2)
         {
             //var value = MidiMessage.GetPitchBendValue(value1, value2);

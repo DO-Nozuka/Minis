@@ -1,4 +1,5 @@
-using Dono.MidiUtilities.Runtime;
+using Dono.Midi.Runtime;
+using Dono.MidiRuntime;
 using UnityEngine.InputSystem;
 
 namespace Minis.Runtime.Devices
@@ -15,7 +16,7 @@ namespace Minis.Runtime.Devices
 
         public void ProcessPitchBend(byte stats, byte value1, byte value2)
         {
-            var value = MidiMessage.GetPitchBendValue(value1, value2);
+            var value = MidiUtilities.PitchByteToValue((value1, value2));
             _state.SetPitch(value);
 
             InputSystem.QueueDeltaStateEvent(this, _state);
