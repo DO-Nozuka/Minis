@@ -14,7 +14,7 @@ namespace Minis.Runtime.Devices
 
             // Send to additional controls
             ProcessAnyNoteOn(stats, note, velocity);
-            if (MidiMessage.IsWhiteNote(note))
+            if (MidiUtilities.IsWhiteNote(note))
                 ProcessAnyWhiteNoteOn(stats, note, velocity);
             else
                 ProcessAnyBlackNoteOn(stats, note, velocity);
@@ -29,7 +29,7 @@ namespace Minis.Runtime.Devices
 
             // Send to additional controls
             ProcessAnyNoteOff(stats, note, velocity);
-            if (MidiMessage.IsWhiteNote(note))
+            if (MidiUtilities.IsWhiteNote(note))
                 ProcessAnyWhiteNoteOff(stats, note, velocity);
             else
                 ProcessAnyBlackNoteOff(stats, note, velocity);
