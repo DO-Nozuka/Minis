@@ -1,5 +1,4 @@
 using Dono.Midi.Runtime;
-using Dono.MidiRuntime;
 using UnityEngine.InputSystem;
 
 namespace Minis.Runtime.Devices
