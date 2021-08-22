@@ -172,45 +172,89 @@ namespace Minis.Runtime.Internal
 
                 var noteOn = status == 9 && data2 != 0;
                 var noteOff = (status == 8) || (status == 9 && data2 == 0);
-
-
-                if (noteOn && size == 3)
-                {
-                    foreach(var midiDevice in midiDevices)
-                    {
-                        midiDevice.ProcessNoteOn(message[0], message[1], message[2]);
-                    }
-                }
-                else if (noteOff && size == 3)
+                
+                
+                if (noteOff && size == 3)
                 {
                     message[0] = (byte)(0x80 + channel);    //0x9n vel=0 => 0x8n vel=0ÅB
                     foreach (var midiDevice in midiDevices)
                     {
-                        midiDevice.ProcessNoteOff(message[0], message[1], message[2]);
+                        midiDevice.Process0x8n(message[0], message[1], message[2]);
+                    }
+                }
+                else if (noteOn && size == 3)
+                {
+                    foreach(var midiDevice in midiDevices)
+                    {
+                        midiDevice.Process0x9n(message[0], message[1], message[2]);
+                    }
+                }
+                else if( status == 0xA && size == 3)
+                {
+                    foreach (var midiDevice in midiDevices)
+                    {
+                        midiDevice.Process0xAn(message[0], message[1], message[2]);
                     }
                 }
                 else if (status == 0xB && size == 3)
                 {
                     foreach (var midiDevice in midiDevices)
                     {
-                        midiDevice.ProcessControlChange(message[0], message[1], message[2]);
+                        midiDevice.Process0xBn(message[0], message[1], message[2]);
                     }
                 }
                 else if (status == 0xC && size == 2)
                 {
                     foreach (var midiDevice in midiDevices)
                     {
-                        midiDevice.ProcessProgramChange(message[0], message[1]);
+                        midiDevice.Process0xCn(message[0], message[1]);
+                    }
+                }
+                else if (status == 0xD && size == 2)
+                {
+                    foreach (var midiDevice in midiDevices)
+                    {
+                        midiDevice.Process0xDn(message[0], message[1]);
                     }
                 }
                 else if (status == 0xE && size == 3)
                 {
                     foreach (var midiDevice in midiDevices)
                     {
-                        midiDevice.ProcessPitchBend(message[0], message[1], message[2]);
+                        midiDevice.Process0xEn(message[0], message[1], message[2]);
+                    }
+                }
+                else if(status == 0xF)
+                {
+                    switch (size)
+                    {
+                        case 1:
+                            foreach (var midiDevice in midiDevices)
+                            {
+                                midiDevice.ProcessOxFn(message[0]);
+                            }
+                            break;
+                        case 2:
+                            foreach (var midiDevice in midiDevices)
+                            {
+                                midiDevice.ProcessOxFn(message[0], message[1]);
+                            }
+                            break;
+                        case 3:
+                            foreach (var midiDevice in midiDevices)
+                            {
+                                midiDevice.ProcessOxFn(message[0], message[1], message[2]);
+                            }
+                            break;
                     }
                 }
             }
+
+            foreach (var midiDevice in midiDevices)
+            {
+                midiDevice.QueueEvent();
+            }
+
         }
         #endregion
     }

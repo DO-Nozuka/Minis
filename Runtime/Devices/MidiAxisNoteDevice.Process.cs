@@ -7,110 +7,29 @@ namespace Minis.Runtime.Devices
     {
         static MidiAxisNoteDeviceState _state;
 
-        public void ProcessNoteOn(byte stats, byte note, byte velocity)
+        public void Process0x9n(byte stats, byte note, byte velocity)
         {
             _state.SetNote(note, velocity / 127f);
-
-            // Send to additional controls
-            ProcessAnyNoteOn(stats, note, velocity);
-            if (MidiUtilities.IsWhiteNote(note))
-                ProcessAnyWhiteNoteOn(stats, note, velocity);
-            else
-                ProcessAnyBlackNoteOn(stats, note, velocity);
-
-            InputSystem.QueueDeltaStateEvent(this, _state);
         }
-
-
-        public void ProcessNoteOff(byte stats, byte note, byte velocity)
+        public void Process0x8n(byte stats, byte note, byte velocity)
         {
             _state.SetNote(note, -velocity / 127f);
-
-            // Send to additional controls
-            ProcessAnyNoteOff(stats, note, velocity);
-            if (MidiUtilities.IsWhiteNote(note))
-                ProcessAnyWhiteNoteOff(stats, note, velocity);
-            else
-                ProcessAnyBlackNoteOff(stats, note, velocity);
-
-            InputSystem.QueueDeltaStateEvent(this, _state);
         }
-
-        public void ProcessControlChange(byte stats, byte number, byte value)
-        {
-            InputSystem.QueueDeltaStateEvent(this, _state);
-        }
-
-        private bool IsLastPitchUp = false;
-        private bool IsLastPitchDown = false;
-        public void ProcessPitchBend(byte stats, byte value1, byte value2)
+        public void Process0xAn(byte stats, byte data1, byte data2) { }
+        public void Process0xBn(byte stats, byte number, byte value) { }
+        public void Process0xCn(byte stats, byte value) { }
+        public void Process0xDn(byte stats, byte data1) { }
+        public void Process0xEn(byte stats, byte value1, byte value2)
         {
             var value = MidiUtilities.PitchByteToValue((value1, value2));
-
-            if (value < 0)
-            {
-                //Down
-                ProcessPitchDown(stats, value1, value2);
-                IsLastPitchDown = true;
-                IsLastPitchUp = false;
-            }
-            else if (value > 0)
-            {
-                //Up
-                ProcessPitchUp(stats, value1, value2);
-                IsLastPitchDown = false;
-                IsLastPitchUp = true;
-            }
-            else
-            {
-                //Center
-                if (IsLastPitchDown)
-                    ProcessPitchDown(stats, value1, value2);
-                else if (IsLastPitchUp)
-                    ProcessPitchUp(stats, value1, value2);
-            }
-
-
-            InputSystem.QueueDeltaStateEvent(this, _state);
         }
+        public void ProcessOxFn(byte stats) { }
+        public void ProcessOxFn(byte stats, byte data1) { }
+        public void ProcessOxFn(byte stats, byte data1, byte data2) { }
 
-        public void ProcessProgramChange(byte stats, byte value)
+        public void QueueEvent()
         {
             InputSystem.QueueDeltaStateEvent(this, _state);
-        }
-
-        //---- Sub Process(not use QueueEvent) ----
-        private void ProcessAnyNoteOn(byte stats, byte note, byte velocity)
-        {
-        }
-        private void ProcessAnyNoteOff(byte stats, byte note, byte velocity)
-        {
-        }
-
-        private void ProcessAnyWhiteNoteOn(byte stats, byte note, byte velocity)
-        {
-        }
-        private void ProcessAnyWhiteNoteOff(byte stats, byte note, byte velocity)
-        {
-        }
-
-        private void ProcessAnyBlackNoteOn(byte stats, byte note, byte velocity)
-        {
-        }
-        private void ProcessAnyBlackNoteOff(byte stats, byte note, byte velocity)
-        {
-        }
-
-        private void ProcessPitchUp(byte stats, byte value1, byte value2)
-        {
-        }
-
-        private void ProcessPitchDown(byte stats, byte value1, byte value2)
-        {
-        }
-
-        private void ProcessModulation(short modulationValue)
-        {
         }
     }
 }

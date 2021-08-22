@@ -69,15 +69,15 @@ namespace Minis.Runtime.Devices
             __vec3CC.Set(stats, data1, data2);
             SetAnyMsg(stats, data1, data2);
         }
-        public void SetPC(byte stats, byte data1, byte data2) 
+        public void SetPC(byte stats, byte data1) 
         {
-            __vec3PC.Set(stats, data1, data2);
-            SetAnyMsg(stats, data1, data2);
+            __vec3PC.Set(stats, data1, 0);
+            SetAnyMsg(stats, data1, 0);
         }
-        public void SetCP(byte stats, byte data1, byte data2)
+        public void SetCP(byte stats, byte data1)
         {
-            __vec3CP.Set(stats, data1, data2);
-            SetAnyMsg(stats, data1, data2);
+            __vec3CP.Set(stats, data1, 0);
+            SetAnyMsg(stats, data1, 0);
         }
         public void SetPitch(byte stats, byte data1, byte data2) 
         {
