@@ -5,6 +5,7 @@ namespace Minis.Runtime.Devices
 {
     public partial class MidiAxisPitchDevice : InputDevice, IMidiInputSystemDevice
     {
+        bool _changeFrag = false;
         static MidiAxisPitchDeviceState _state;
 
         public void Process0x8n(byte stats, byte note, byte velocity) { }
@@ -17,15 +18,19 @@ namespace Minis.Runtime.Devices
         {
             var value = MidiUtilities.PitchByteToValue((value1, value2));
             _state.SetPitch(value);
-
+            _changeFrag = true;
         }
         public void ProcessOxFn(byte stats) { }
         public void ProcessOxFn(byte stats, byte data1) { }
         public void ProcessOxFn(byte stats, byte data1, byte data2) { }
 
+
         public void QueueEvent()
         {
-            InputSystem.QueueDeltaStateEvent(this, _state);
+            if (_changeFrag)
+                InputSystem.QueueDeltaStateEvent(this, _state);
+
+            _changeFrag = false;
         }
     }
 }

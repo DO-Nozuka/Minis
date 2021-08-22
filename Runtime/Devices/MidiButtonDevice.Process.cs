@@ -5,18 +5,18 @@ namespace Minis.Runtime.Devices
 {
     public partial class MidiButtonDevice : InputDevice, IMidiInputSystemDevice
     {
+        bool _changeFrag = false;
         static MidiButtonDeviceState _state;
 
         public void Process0x8n(byte stats, byte note, byte velocity)
         {
             _state.SetNoteOff(note);
-
+            _changeFrag = true;
         }
         public unsafe void Process0x9n(byte stats, byte note, byte velocity)
         {
             _state.SetNoteOn(note);
-
-
+            _changeFrag = true;
         }
         public void Process0xAn(byte stats, byte data1, byte data2) { }
         public void Process0xBn(byte stats, byte number, byte value) { }
@@ -52,9 +52,7 @@ namespace Minis.Runtime.Devices
                 else if (IsLastPitchUp)
                     ProcessPitchUp(stats, value1, value2);
             }
-
-
-
+            _changeFrag = true;
         }
         public void ProcessOxFn(byte stats) { }
         public void ProcessOxFn(byte stats, byte data1) { }
@@ -73,7 +71,10 @@ namespace Minis.Runtime.Devices
 
         public void QueueEvent()
         {
-            InputSystem.QueueDeltaStateEvent(this, _state);
+            if (_changeFrag)
+                InputSystem.QueueDeltaStateEvent(this, _state);
+
+            _changeFrag = false;
         }
     }
 }
