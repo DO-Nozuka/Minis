@@ -249,12 +249,6 @@ namespace Minis.Runtime.Internal
                     }
                 }
             }
-
-            foreach (var midiDevice in midiDevices)
-            {
-                midiDevice.QueueEvent();
-            }
-
         }
         #endregion
     }

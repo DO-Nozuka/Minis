@@ -12,6 +12,5 @@ namespace Minis.Runtime.Devices
         public void ProcessOxFn(byte stats);
         public void ProcessOxFn(byte stats, byte data1);
         public void ProcessOxFn(byte stats, byte data1, byte data2);
-        public void QueueEvent();
     }
 }

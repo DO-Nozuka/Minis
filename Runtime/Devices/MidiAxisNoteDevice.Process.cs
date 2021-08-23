@@ -5,18 +5,17 @@ namespace Minis.Runtime.Devices
 {
     public partial class MidiAxisNoteDevice : InputDevice, IMidiInputSystemDevice
     {
-        bool _changeFrag = false;
         static MidiAxisNoteDeviceState _state;
 
         public void Process0x9n(byte stats, byte note, byte velocity)
         {
             _state.SetNote(note, velocity / 127f);
-            _changeFrag = true;
+            InputSystem.QueueDeltaStateEvent(this, _state);
         }
         public void Process0x8n(byte stats, byte note, byte velocity)
         {
             _state.SetNote(note, -velocity / 127f);
-            _changeFrag = true;
+            InputSystem.QueueDeltaStateEvent(this, _state);
         }
         public void Process0xAn(byte stats, byte data1, byte data2) { }
         public void Process0xBn(byte stats, byte number, byte value) { }
@@ -25,19 +24,10 @@ namespace Minis.Runtime.Devices
         public void Process0xEn(byte stats, byte value1, byte value2)
         {
             var value = MidiUtilities.PitchByteToValue((value1, value2));
-            _changeFrag = true;
+            InputSystem.QueueDeltaStateEvent(this, _state);
         }
         public void ProcessOxFn(byte stats) { }
         public void ProcessOxFn(byte stats, byte data1) { }
         public void ProcessOxFn(byte stats, byte data1, byte data2) { }
-
-
-        public void QueueEvent()
-        {
-            if (_changeFrag)
-                InputSystem.QueueDeltaStateEvent(this, _state);
-
-            _changeFrag = false;
-        }
     }
 }
